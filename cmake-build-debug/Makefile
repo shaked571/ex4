@@ -111,17 +111,44 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named exercise2
+# Target rules for targets named ex4
 
 # Build rule for target.
-exercise2: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 exercise2
-.PHONY : exercise2
+ex4: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 ex4
+.PHONY : ex4
 
 # fast build rule for target.
-exercise2/fast:
-	$(MAKE) -f CMakeFiles/exercise2.dir/build.make CMakeFiles/exercise2.dir/build
-.PHONY : exercise2/fast
+ex4/fast:
+	$(MAKE) -f CMakeFiles/ex4.dir/build.make CMakeFiles/ex4.dir/build
+.PHONY : ex4/fast
+
+CacheFS.o: CacheFS.cpp.o
+
+.PHONY : CacheFS.o
+
+# target to build an object file
+CacheFS.cpp.o:
+	$(MAKE) -f CMakeFiles/ex4.dir/build.make CMakeFiles/ex4.dir/CacheFS.cpp.o
+.PHONY : CacheFS.cpp.o
+
+CacheFS.i: CacheFS.cpp.i
+
+.PHONY : CacheFS.i
+
+# target to preprocess a source file
+CacheFS.cpp.i:
+	$(MAKE) -f CMakeFiles/ex4.dir/build.make CMakeFiles/ex4.dir/CacheFS.cpp.i
+.PHONY : CacheFS.cpp.i
+
+CacheFS.s: CacheFS.cpp.s
+
+.PHONY : CacheFS.s
+
+# target to generate assembly for a file
+CacheFS.cpp.s:
+	$(MAKE) -f CMakeFiles/ex4.dir/build.make CMakeFiles/ex4.dir/CacheFS.cpp.s
+.PHONY : CacheFS.cpp.s
 
 check.o: check.cpp.o
 
@@ -129,7 +156,7 @@ check.o: check.cpp.o
 
 # target to build an object file
 check.cpp.o:
-	$(MAKE) -f CMakeFiles/exercise2.dir/build.make CMakeFiles/exercise2.dir/check.cpp.o
+	$(MAKE) -f CMakeFiles/ex4.dir/build.make CMakeFiles/ex4.dir/check.cpp.o
 .PHONY : check.cpp.o
 
 check.i: check.cpp.i
@@ -138,7 +165,7 @@ check.i: check.cpp.i
 
 # target to preprocess a source file
 check.cpp.i:
-	$(MAKE) -f CMakeFiles/exercise2.dir/build.make CMakeFiles/exercise2.dir/check.cpp.i
+	$(MAKE) -f CMakeFiles/ex4.dir/build.make CMakeFiles/ex4.dir/check.cpp.i
 .PHONY : check.cpp.i
 
 check.s: check.cpp.s
@@ -147,7 +174,7 @@ check.s: check.cpp.s
 
 # target to generate assembly for a file
 check.cpp.s:
-	$(MAKE) -f CMakeFiles/exercise2.dir/build.make CMakeFiles/exercise2.dir/check.cpp.s
+	$(MAKE) -f CMakeFiles/ex4.dir/build.make CMakeFiles/ex4.dir/check.cpp.s
 .PHONY : check.cpp.s
 
 # Help Target
@@ -158,7 +185,10 @@ help:
 	@echo "... depend"
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
-	@echo "... exercise2"
+	@echo "... ex4"
+	@echo "... CacheFS.o"
+	@echo "... CacheFS.i"
+	@echo "... CacheFS.s"
 	@echo "... check.o"
 	@echo "... check.i"
 	@echo "... check.s"

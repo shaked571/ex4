@@ -6,14 +6,6 @@
 
 #IncludeRegexTransform: 
 
-/home/shaked/CLionProjects/ex4/CacheFS.cpp
-CacheFS.h
-/home/shaked/CLionProjects/ex4/CacheFS.h
-
-/home/shaked/CLionProjects/ex4/CacheFS.h
-stdlib.h
--
-
 /home/shaked/CLionProjects/ex4/check.cpp
 string.h
 /home/shaked/CLionProjects/ex4/string.h

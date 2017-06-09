@@ -60,39 +60,39 @@ CMAKE_SOURCE_DIR = /home/shaked/CLionProjects/ex4
 CMAKE_BINARY_DIR = /home/shaked/CLionProjects/ex4/cmake-build-debug
 
 #=============================================================================
-# Target rules for target CMakeFiles/exercise2.dir
+# Target rules for target CMakeFiles/ex4.dir
 
 # All Build rule for target.
-CMakeFiles/exercise2.dir/all:
-	$(MAKE) -f CMakeFiles/exercise2.dir/build.make CMakeFiles/exercise2.dir/depend
-	$(MAKE) -f CMakeFiles/exercise2.dir/build.make CMakeFiles/exercise2.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/shaked/CLionProjects/ex4/cmake-build-debug/CMakeFiles --progress-num=1,2 "Built target exercise2"
-.PHONY : CMakeFiles/exercise2.dir/all
+CMakeFiles/ex4.dir/all:
+	$(MAKE) -f CMakeFiles/ex4.dir/build.make CMakeFiles/ex4.dir/depend
+	$(MAKE) -f CMakeFiles/ex4.dir/build.make CMakeFiles/ex4.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/shaked/CLionProjects/ex4/cmake-build-debug/CMakeFiles --progress-num=1,2,3 "Built target ex4"
+.PHONY : CMakeFiles/ex4.dir/all
 
 # Include target in all.
-all: CMakeFiles/exercise2.dir/all
+all: CMakeFiles/ex4.dir/all
 
 .PHONY : all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/exercise2.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/shaked/CLionProjects/ex4/cmake-build-debug/CMakeFiles 2
-	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/exercise2.dir/all
+CMakeFiles/ex4.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/shaked/CLionProjects/ex4/cmake-build-debug/CMakeFiles 3
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/ex4.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/shaked/CLionProjects/ex4/cmake-build-debug/CMakeFiles 0
-.PHONY : CMakeFiles/exercise2.dir/rule
+.PHONY : CMakeFiles/ex4.dir/rule
 
 # Convenience name for target.
-exercise2: CMakeFiles/exercise2.dir/rule
+ex4: CMakeFiles/ex4.dir/rule
 
-.PHONY : exercise2
-
-# clean rule for target.
-CMakeFiles/exercise2.dir/clean:
-	$(MAKE) -f CMakeFiles/exercise2.dir/build.make CMakeFiles/exercise2.dir/clean
-.PHONY : CMakeFiles/exercise2.dir/clean
+.PHONY : ex4
 
 # clean rule for target.
-clean: CMakeFiles/exercise2.dir/clean
+CMakeFiles/ex4.dir/clean:
+	$(MAKE) -f CMakeFiles/ex4.dir/build.make CMakeFiles/ex4.dir/clean
+.PHONY : CMakeFiles/ex4.dir/clean
+
+# clean rule for target.
+clean: CMakeFiles/ex4.dir/clean
 
 .PHONY : clean
 
