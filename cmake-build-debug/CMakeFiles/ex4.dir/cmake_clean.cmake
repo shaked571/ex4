@@ -1,5 +1,6 @@
 file(REMOVE_RECURSE
   "CMakeFiles/ex4.dir/check.cpp.o"
+  "CMakeFiles/ex4.dir/CacheFS.cpp.o"
   "ex4.pdb"
   "ex4"
 )

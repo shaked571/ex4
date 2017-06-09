@@ -1,0 +1,158 @@
+//
+// Created by shaked on 09/06/17.
+//
+
+#include "CacheFS.h"
+
+
+
+/**
+ Initializes the CacheFS.
+ Assumptions:
+	1. CacheFS_init will be called before any other function.
+	2. CacheFS_init might be called multiple times, but only with CacheFS_destroy
+  	   between them.
+
+ Parameters:
+	blocks_num   - the number of blocks in the buffer cache
+	cache_algo   - the cache algorithm that will be used
+    f_old        - the percentage of blocks in the old partition (rounding down)
+				   relevant in FBR algorithm only
+    f_new        - the percentage of blocks in the new partition (rounding down)
+				   relevant in FBR algorithm only
+ Returned value:
+    0 in case of success, negative value in case of failure.
+	The function will fail in the following cases:
+		1. system call or library function fails (e.g. new).
+		2. invalid parameters.
+	Invalid parameters are:
+		1. blocks_num is invalid if it's not a positive number (zero is invalid too).
+		2. f_old is invalid if it is not a number between 0 to 1 or
+		   if the size of the partition of the old blocks is not positive.
+		3. fNew is invalid if it is not a number between 0 to 1 or
+		   if the size of the partition of the new blocks is not positive.
+		4. Also, fOld and fNew are invalid if the fOld+fNew is bigger than 1.
+
+		Pay attention: bullets 2-4 are relevant (and should be checked)
+		only if cache_algo is FBR.
+
+ For example:
+ CacheFS_init(100, FBR, 0.3333, 0.5)
+ Initializes a CacheFS that uses FBR to manage the cache.
+ The cache contains 100 blocks, 33 blocks in the old partition,
+ 50 in the new partition, and the remaining 17 are in the middle partition.
+ */
+int CacheFS_init(int blocks_num, cache_algo_t cache_algo,
+                 double f_old , double f_new  )
+{
+
+
+
+    return 0;
+}
+
+/**
+ Destroys the CacheFS.
+ This function releases all the allocated resources by the library.
+
+ Assumptions:
+	1. CacheFS_destroy will be called only after CacheFS_init (one destroy per one init).
+	2. After CacheFS_destroy is called,
+	   the next CacheFS's function that will be called is CacheFS_init.
+	3. CacheFS_destroy is called only after all the open files already closed.
+	   In other words, it's the user responsibility to close the files before destroying
+	   the CacheFS.
+
+ Returned value:
+    0 in case of success, negative value in case of failure.
+	The function will fail if a system call or a library function fails.
+*/
+int CacheFS_destroy() {
+    return 0;
+}
+
+
+/**
+ File open operation.
+ Receives a path for a file, opens it, and returns an id
+ for accessing the file later
+
+ Notes:
+	1. You must open the file with the following flags: O_RDONLY | O_DIRECT | O_SYNC
+	2. The same file might be opened multiple times.
+	   Like in POISX, it's valid.
+	3. The pathname is not unique per file, because:
+		a. relative paths are not unique: "myFolder/../tmp" and "tmp".
+		b. we might open a link ("short-cut") to the file
+
+ Parameters:
+    pathname - the path to the file that will be opened
+
+ Returned value:
+    In case of success:
+		Non negative value represents the id of the file.
+		This may be the file descriptor, or any id number that you wish to create.
+		This id will be used later to read from the file and to close it.
+
+ 	In case of failure:
+		Negative number.
+		A failure will occur if:
+			1. System call or library function fails (e.g. open).
+			2. Invalid pathname. Pay attention that we support only files under
+			   "/tmp" due to the use of NFS in the Aquarium.
+ */
+int CacheFS_open(const char *pathname) {
+    return 0;
+}
+
+
+/**
+ File close operation.
+ Receives id of a file, and closes it.
+
+ Returned value:
+	0 in case of success, negative value in case of failure.
+	The function will fail in the following cases:
+		1. a system call or a library function fails (e.g. close).
+		2. invalid file_id. file_id is valid if"f it was returned by
+		CacheFS_open, and it is not already closed.
+ */
+int CacheFS_close(int file_id) {
+    return 0;
+}
+
+
+/**
+   Read data from an open file.
+
+   Read should return exactly the number of bytes requested except
+   on EOF or error. For example, if you receive size=100, offset=0,
+   but the size of the file is 10, you will initialize only the first
+   ten bytes in the buff and return the number 10.
+
+   In order to read the content of a file in CacheFS,
+   We decided to implement a function similar to POSIX's pread, with
+   the same parameters.
+
+ Returned value:
+    In case of success:
+		Non negative value represents the number of bytes read.
+		See more details above.
+
+ 	In case of failure:
+		Negative number.
+		A failure will occur if:
+			1. a system call or a library function fails (e.g. pread).
+			2. invalid parameters
+				a. file_id is valid if"f it was returned by
+			       CacheFS_open, and it wasn't already closed.
+				b. buf is invalid if it is NULL.
+				c. offset is invalid if it's negative
+				   [Note: offset after the end of the file is valid.
+				    In this case, you need to return zero,
+				    like posix's pread does.]
+				[Note: any value of count is valid.]
+ */
+int CacheFS_pread(int file_id, void *buf, size_t count, off_t offset) {
+    return 0;
+}

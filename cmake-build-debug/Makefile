@@ -111,17 +111,17 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named ex4
+# Target rules for targets named exercise2
 
 # Build rule for target.
-ex4: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 ex4
-.PHONY : ex4
+exercise2: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 exercise2
+.PHONY : exercise2
 
 # fast build rule for target.
-ex4/fast:
-	$(MAKE) -f CMakeFiles/ex4.dir/build.make CMakeFiles/ex4.dir/build
-.PHONY : ex4/fast
+exercise2/fast:
+	$(MAKE) -f CMakeFiles/exercise2.dir/build.make CMakeFiles/exercise2.dir/build
+.PHONY : exercise2/fast
 
 check.o: check.cpp.o
 
@@ -129,7 +129,7 @@ check.o: check.cpp.o
 
 # target to build an object file
 check.cpp.o:
-	$(MAKE) -f CMakeFiles/ex4.dir/build.make CMakeFiles/ex4.dir/check.cpp.o
+	$(MAKE) -f CMakeFiles/exercise2.dir/build.make CMakeFiles/exercise2.dir/check.cpp.o
 .PHONY : check.cpp.o
 
 check.i: check.cpp.i
@@ -138,7 +138,7 @@ check.i: check.cpp.i
 
 # target to preprocess a source file
 check.cpp.i:
-	$(MAKE) -f CMakeFiles/ex4.dir/build.make CMakeFiles/ex4.dir/check.cpp.i
+	$(MAKE) -f CMakeFiles/exercise2.dir/build.make CMakeFiles/exercise2.dir/check.cpp.i
 .PHONY : check.cpp.i
 
 check.s: check.cpp.s
@@ -147,7 +147,7 @@ check.s: check.cpp.s
 
 # target to generate assembly for a file
 check.cpp.s:
-	$(MAKE) -f CMakeFiles/ex4.dir/build.make CMakeFiles/ex4.dir/check.cpp.s
+	$(MAKE) -f CMakeFiles/exercise2.dir/build.make CMakeFiles/exercise2.dir/check.cpp.s
 .PHONY : check.cpp.s
 
 # Help Target
@@ -158,7 +158,7 @@ help:
 	@echo "... depend"
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
-	@echo "... ex4"
+	@echo "... exercise2"
 	@echo "... check.o"
 	@echo "... check.i"
 	@echo "... check.s"

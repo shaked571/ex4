@@ -1,1 +1,1 @@
-/usr/bin/c++   -g   CMakeFiles/ex4.dir/check.cpp.o  -o ex4 
+/usr/bin/c++   -g   CMakeFiles/ex4.dir/check.cpp.o CMakeFiles/ex4.dir/CacheFS.cpp.o  -o ex4 
