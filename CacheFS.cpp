@@ -9,13 +9,20 @@
 #include <stdio.h>
 
 
-//##########################################################
+//##################################################################################################################
 //const
 
 int const MINIMUM_PRC = 0;
-int const MAXIMUM_PRC = 100;
+int const MAXIMUM_PRC = 1;
 int const ERROR = -1;
+int const MINIMUM_BLOCK_NUM = 1;
 std::string const ERROR_MSG_ARGS = "Error occurred : invalid Argument";
+
+
+//##################################################################################################################
+//Function
+
+
 /**
  Initializes the CacheFS.
  Assumptions:
@@ -55,18 +62,25 @@ std::string const ERROR_MSG_ARGS = "Error occurred : invalid Argument";
 int CacheFS_init(int blocks_num, cache_algo_t cache_algo,
                  double f_old , double f_new  )
 {
-    if ((blocks_num < 1)||f_old < MINIMUM_PRC || f_new < MINIMUM_PRC ||
-            f_new > MAXIMUM_PRC || f_old > MINIMUM_PRC)
+    if (blocks_num < MINIMUM_BLOCK_NUM)
     {
         std::cerr << ERROR_MSG_ARGS << std::endl;
         return  ERROR;
     }
-    switch (cache_algo){
+    switch (cache_algo)
+    {
         case LRU:
             return 0;
         case LFU:
             return 0;
         case FBR:
+            if(f_old < MINIMUM_PRC || f_new < MINIMUM_PRC || f_new > MAXIMUM_PRC || f_old > MINIMUM_PRC||
+                    f_new + f_old > MAXIMUM_PRC)
+            {
+                std::cerr << ERROR_MSG_ARGS << std::endl;
+                return  ERROR;
+            }
+
             return 0;
         default:
             std::cerr << ERROR_MSG_ARGS <<std::endl;
