@@ -156,3 +156,79 @@ int CacheFS_close(int file_id) {
 int CacheFS_pread(int file_id, void *buf, size_t count, off_t offset) {
     return 0;
 }
+
+
+/**
+This function writes the current state of the cache to a file.
+The function writes a line for every block that was used in the cache
+(meaning, each block with at least one access).
+Each line contains the following values separated by a single space.
+	1. Full path of the file
+	2. The number of the block. Pay attention: this is not the number in the cache,
+	   but the enumeration within the file itself, starting with 0 for the first
+	   block in each file.
+For LRU and LFU The order of the entries is from the last block that will be evicted from the cache
+to the first (next) block that will be evicted.
+For FBR use the LRU order (the order of the stack).
+
+Notes:
+	1. If log_path is a path to existed file - the function will append the cache
+	   state (described above) to the cache.
+	   Otherwise, if the path is valid, but the file doesn't exist -
+	   a new file will be created.
+	   For example, if "/tmp" contains a single folder named "folder", then
+			"/tmp/folder/myLog" is valid, while "/tmp/not_a_folder/myLog" is invalid.
+	2. Of course, this operation doesn't change the cache at all.
+	3. log_path doesn't have to be under "/tmp".
+	3. This function might be useful for debugging purpose as well as auto-tests.
+	   Make sure to follow the syntax and order as explained above.
+
+ Parameter:
+	log_path - a path of the log file. A valid path is either: a path to an existing
+			   log file or a path to a new file (under existing directory).
+
+ Returned value:
+    0 in case of success, negative value in case of failure.
+	The function will fail in the following cases:
+		1. system call or library function fails (e.g. open, write).
+		2. log_path is invalid.
+ */
+int CacheFS_print_cache(const char *log_path) {
+    return 0;
+}
+
+
+/**
+This function writes the statistics of the CacheFS to a file.
+This function writes exactly the following lines:
+Hits number: HITS_NUM.
+Misses number: MISS_NUM.
+
+Where HITS_NUM is the number of cache-hits, and MISS_NUM is the number of cache-misses.
+A cache miss counts the number of fetched blocks from the disk.
+A cache hit counts the number of required blocks that were already stored
+in the cache (and therefore we didn't fetch them from the disk again).
+
+Notes:
+	1. If log_path is a path to existed file - the function will append the cache
+	   state (described above) to the cache.
+	   Otherwise, if the path is valid, but the file doesn't exist -
+	   a new file will be created.
+	   For example, if "/tmp" contains a single folder named "folder", then
+			"/tmp/folder/myLog" is valid, while "/tmp/not_a_folder/myLog" is invalid.
+	2. Of course, this operation doesn't change the cache at all.
+	3. log_path doesn't have to be under "/tmp".
+
+ Parameter:
+	log_path - a path of the log file. A valid path is either: a path to an existing
+			   log file or a path to a new file (under existing directory).
+
+ Returned value:
+    0 in case of success, negative value in case of failure.
+	The function will fail in the following cases:
+		1. system call or library function fails (e.g. open, write).
+		2. log_path is invalid.
+ */
+int CacheFS_print_stat(const char *log_path) {
+    return 0;
+}
