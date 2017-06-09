@@ -1,0 +1,14 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/shaked/CLionProjects/ex4/check.cpp
+string.h
+/home/shaked/CLionProjects/ex4/string.h
+iostream
+-
+
