@@ -1,9 +1,9 @@
-cmake_minimum_required(VERSION 3.7)
+cmake_minimum_required(VERSION 3.6)
 project(ex4)
 
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
-set(SOURCE_FILES
-        CacheFS.h check.cpp)
+set(SOURCE_FILES check.cpp CacheFS.h )
+add_executable(exercise2 ${SOURCE_FILES})
 
-add_executable(ex4 ${SOURCE_FILES})
+
