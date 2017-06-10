@@ -7,7 +7,6 @@
 FbrAlgorithm::FbrAlgorithm(int blocks_num,double f_old , double f_new ) :
         Algorithm(blocks_num) ,oldPartitionLocation(f_old), newPartitionLocation(f_new)
 {
-    oldPartitionLocation =
 
 
 

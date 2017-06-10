@@ -7,13 +7,15 @@
 #include <iostream>
 #include "CacheFS.h"
 #include "fcntl.h"
-struct stat fi;
-stat("/tmp", &fi);
-int blksize = fi.st_blksize;
+//struct stat fi;
+//stat("/tmp", &fi);
+//int blksize = fi.st_blksize;
 
 class Block
 {
 
+
+public:
     Block();
 };
 

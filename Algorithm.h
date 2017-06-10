@@ -6,13 +6,13 @@
 #define EX4_ALGORITHM_H
 
 #include <vector>
-#include <bits/unordered_map.h>
+#include <unordered_map>
 #include "CacheFS.h"
 #include "Block.h"
 class Algorithm
 {
 public:
-    virtual Algorithm(int blocks_num) = 0;
+    Algorithm(int blocks_num);
     virtual ~Algorithm() = 0;
     virtual int ChachePread(int file_id, void *buf, size_t count, off_t offset) = 0;
 
