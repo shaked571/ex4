@@ -7,10 +7,22 @@
 #include "fcntl.h"
 #include <string>
 #include <stdio.h>
+#include <stdlib.h>
+#include <malloc.h>
+#include <cstdio>
+#include <cstdlib>
 
 
 //##################################################################################################################
-//const
+//Structs
+
+struct stat fi;
+stat("/tmp", &fi);
+int blksize = fi.st_blksize;
+
+
+//##################################################################################################################
+//Const
 
 int const MINIMUM_PRC = 0;
 int const MAXIMUM_PRC = 1;
@@ -18,7 +30,11 @@ int const ERROR = -1;
 int const MINIMUM_BLOCK_NUM = 1;
 std::string const ERROR_MSG_ARGS = "Error occurred : invalid Argument";
 
+//##################################################################################################################
+//Globals
 
+cache_algo_t algorithm;
+char** cache;
 //##################################################################################################################
 //Function
 
@@ -67,27 +83,17 @@ int CacheFS_init(int blocks_num, cache_algo_t cache_algo,
         std::cerr << ERROR_MSG_ARGS << std::endl;
         return  ERROR;
     }
-    switch (cache_algo)
+    algorithm = cache_algo;
+    if(algorithm == FBR)
     {
-        case LRU:
-            return 0;
-        case LFU:
-            return 0;
-        case FBR:
-            if(f_old < MINIMUM_PRC || f_new < MINIMUM_PRC || f_new > MAXIMUM_PRC || f_old > MINIMUM_PRC||
-                    f_new + f_old > MAXIMUM_PRC)
-            {
-                std::cerr << ERROR_MSG_ARGS << std::endl;
-                return  ERROR;
-            }
-
-            return 0;
-        default:
-            std::cerr << ERROR_MSG_ARGS <<std::endl;
+        if(f_old < MINIMUM_PRC || f_new < MINIMUM_PRC || f_new > MAXIMUM_PRC || f_old > MINIMUM_PRC||
+           f_new + f_old > MAXIMUM_PRC)
+        {
+            std::cerr << ERROR_MSG_ARGS << std::endl;
             return  ERROR;
+        }
     }
-
-
+    cache =(char**) std::malloc(blocks_num * sizeof(char**));
     return 0;
 }
 
