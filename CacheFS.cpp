@@ -86,7 +86,8 @@ int CacheFS_init(int blocks_num, cache_algo_t cache_algo, double f_old , double 
         return  ERROR;
     }
     cache_algo_t  algorithm = cache_algo;
-    switch(algorithm){
+    switch(algorithm)
+    {
         case FBR:
             if(f_old < MINIMUM_PRC || f_new < MINIMUM_PRC || f_new > MAXIMUM_PRC || f_old > MINIMUM_PRC||
                f_new + f_old > MAXIMUM_PRC)
@@ -125,7 +126,9 @@ int CacheFS_init(int blocks_num, cache_algo_t cache_algo, double f_old , double 
     0 in case of success, negative value in case of failure.
 	The function will fail if a system call or a library function fails.
 */
-int CacheFS_destroy() {
+int CacheFS_destroy()
+{
+
     return 0;
 }
 

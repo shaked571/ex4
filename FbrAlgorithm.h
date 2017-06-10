@@ -12,8 +12,8 @@ public:
     FbrAlgorithm(int blocks_num,double f_old , double f_new );
 
 private:
-    double f_old;
-    double f_new;
+    double oldPartitionLocation;
+    double newPartitionLocation;
 };
 
 
