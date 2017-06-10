@@ -72,8 +72,7 @@ char** cache;
  The cache contains 100 blocks, 33 blocks in the old partition,
  50 in the new partition, and the remaining 17 are in the middle partition.
  */
-int CacheFS_init(int blocks_num, cache_algo_t cache_algo,
-                 double f_old , double f_new  )
+int CacheFS_init(int blocks_num, cache_algo_t cache_algo, double f_old , double f_new  )
 {
     if (blocks_num < MINIMUM_BLOCK_NUM)
     {

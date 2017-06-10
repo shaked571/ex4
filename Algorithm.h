@@ -11,13 +11,11 @@
 class Algorithm
 {
 public:
-    virtual Algorithm(int blocks_num, cache_algo_t cache_algo) = 0;
+    virtual Algorithm(int blocks_num) = 0;
     virtual ~Algorithm();
-
 
 private:
     int blockNum;
-    cache_algo_t cache_algo;
     std::unordered_map<int, Block*> mapOfBlocks;
 };
 

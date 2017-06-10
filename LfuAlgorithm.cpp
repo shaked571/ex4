@@ -4,4 +4,4 @@
 
 #include "LfuAlgorithm.h"
 
-LfuAlgorithm::LfuAlgorithm(int blocks_num, cache_algo_t cache_algo) : Algorithm(blocks_num, cache_algo) {}
+LfuAlgorithm::LfuAlgorithm(int blocks_num) : Algorithm(blocks_num) {}

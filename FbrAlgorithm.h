@@ -9,9 +9,11 @@
 
 class FbrAlgorithm :Algorithm{
 public:
-    FbrAlgorithm(int blocks_num, cache_algo_t cache_algo);
+    FbrAlgorithm(int blocks_num,double f_old , double f_new );
 
-
+private:
+    double f_old;
+    double f_new;
 };
 
 

@@ -11,7 +11,7 @@ class LruAlgorithm:Algorithm
 {
 
 public:
-    LruAlgorithm(int blocks_num, cache_algo_t cache_algo);
+    LruAlgorithm(int blocks_num);
 };
 
 

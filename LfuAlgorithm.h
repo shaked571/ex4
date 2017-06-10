@@ -9,7 +9,7 @@
 
 class LfuAlgorithm :Algorithm{
 public:
-    LfuAlgorithm(int blocks_num, cache_algo_t cache_algo);
+    LfuAlgorithm(int blocks_num);
 
 };
 
