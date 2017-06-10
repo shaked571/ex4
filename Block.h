@@ -11,9 +11,10 @@ struct stat fi;
 stat("/tmp", &fi);
 int blksize = fi.st_blksize;
 
-class Block {
+class Block
+{
 
-    Block()
+    Block();
 };
 
 

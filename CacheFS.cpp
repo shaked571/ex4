@@ -28,11 +28,6 @@ int const MINIMUM_BLOCK_NUM = 1;
 std::string const ERROR_MSG_ARGS = "Error occurred : invalid Argument";
 
 //##################################################################################################################
-//Globals
-
-cache_algo_t algorithm;
-char** cache;
-//##################################################################################################################
 //Function
 
 
@@ -79,7 +74,7 @@ int CacheFS_init(int blocks_num, cache_algo_t cache_algo, double f_old , double 
         std::cerr << ERROR_MSG_ARGS << std::endl;
         return  ERROR;
     }
-    algorithm = cache_algo;
+    cache_algo_t  algorithm = cache_algo;
     if(algorithm == FBR)
     {
         if(f_old < MINIMUM_PRC || f_new < MINIMUM_PRC || f_new > MAXIMUM_PRC || f_old > MINIMUM_PRC||
@@ -89,7 +84,7 @@ int CacheFS_init(int blocks_num, cache_algo_t cache_algo, double f_old , double 
             return  ERROR;
         }
     }
-    cache =(char**) std::malloc(blocks_num * sizeof(char**));
+//    cache =(char**) std::malloc(blocks_num * sizeof(char**));
     return 0;
 }
 
@@ -196,6 +191,12 @@ int CacheFS_close(int file_id) {
 				[Note: any value of count is valid.]
  */
 int CacheFS_pread(int file_id, void *buf, size_t count, off_t offset) {
+
+    if(buf == NULL || offset < 0 )
+    {
+        std::cerr <<"in CacheFS_pread" <<ERROR_MSG_ARGS << std::endl;
+        return ERROR;
+    }
     return 0;
 }
 

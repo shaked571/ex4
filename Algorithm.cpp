@@ -12,3 +12,8 @@ Algorithm::Algorithm(int blocks_num):blockNum(blocks_num)
 Algorithm::~Algorithm() {
 
 }
+
+
+
+
+

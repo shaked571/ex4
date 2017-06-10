@@ -11,6 +11,8 @@ class LfuAlgorithm :Algorithm{
 public:
     LfuAlgorithm(int blocks_num);
 
+
+
 };
 
 

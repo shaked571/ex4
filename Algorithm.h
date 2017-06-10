@@ -5,18 +5,20 @@
 #ifndef EX4_ALGORITHM_H
 #define EX4_ALGORITHM_H
 
-#include <unordered_map>
+#include <vector>
 #include "CacheFS.h"
 #include "Block.h"
 class Algorithm
 {
 public:
     virtual Algorithm(int blocks_num) = 0;
-    virtual ~Algorithm();
+    virtual ~Algorithm() = 0;
+    virtual int ChachePread(int file_id, void *buf, size_t count, off_t offset) = 0;
 
-private:
+protected:
     int blockNum;
-    std::unordered_map<int, Block*> mapOfBlocks;
+    std::vector<Block*> vectorOfBlocks;
+
 };
 
 
