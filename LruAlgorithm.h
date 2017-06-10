@@ -9,7 +9,9 @@
 
 class LruAlgorithm:Algorithm
 {
-    LruAlgorithm(int blocks_num, cache_algo_t cache_algo):Algorithm(blocks_num, cache_algo)
+
+public:
+    LruAlgorithm(int blocks_num, cache_algo_t cache_algo);
 };
 
 

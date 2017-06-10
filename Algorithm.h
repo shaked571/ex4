@@ -5,8 +5,9 @@
 #ifndef EX4_ALGORITHM_H
 #define EX4_ALGORITHM_H
 
+#include <unordered_map>
 #include "CacheFS.h"
-
+#include "Block.h"
 class Algorithm
 {
 public:
@@ -16,7 +17,9 @@ public:
 
 
 private:
-
+    int blockNum;
+    cache_algo_t cache_algo;
+    std::unordered_map<int, Block*> mapOfBlocks;
 };
 
 
