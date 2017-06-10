@@ -12,7 +12,6 @@ class Algorithm
 {
 public:
     virtual Algorithm(int blocks_num, cache_algo_t cache_algo) = 0;
-
     virtual ~Algorithm();
 
 
