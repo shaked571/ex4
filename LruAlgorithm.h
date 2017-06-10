@@ -7,7 +7,7 @@
 
 #include "Algorithm.h"
 
-class LruAlgorithm:Algorithm
+class LruAlgorithm:public Algorithm
 {
 
 public:

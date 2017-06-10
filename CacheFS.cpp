@@ -5,6 +5,10 @@
 #include <iostream>
 #include "CacheFS.h"
 #include "fcntl.h"
+#include "Algorithm.h"
+#include "LfuAlgorithm.h"
+#include "FbrAlgorithm.h"
+#include "LruAlgorithm.h"
 #include <string>
 #include <stdio.h>
 #include <stdlib.h>
@@ -26,6 +30,13 @@ int const MAXIMUM_PRC = 1;
 int const ERROR = -1;
 int const MINIMUM_BLOCK_NUM = 1;
 std::string const ERROR_MSG_ARGS = "Error occurred : invalid Argument";
+
+//##################################################################################################################
+//Global
+
+Algorithm* program;
+
+
 
 //##################################################################################################################
 //Function
@@ -75,16 +86,26 @@ int CacheFS_init(int blocks_num, cache_algo_t cache_algo, double f_old , double 
         return  ERROR;
     }
     cache_algo_t  algorithm = cache_algo;
-    if(algorithm == FBR)
-    {
-        if(f_old < MINIMUM_PRC || f_new < MINIMUM_PRC || f_new > MAXIMUM_PRC || f_old > MINIMUM_PRC||
-           f_new + f_old > MAXIMUM_PRC)
-        {
+    switch(algorithm){
+        case FBR:
+            if(f_old < MINIMUM_PRC || f_new < MINIMUM_PRC || f_new > MAXIMUM_PRC || f_old > MINIMUM_PRC||
+               f_new + f_old > MAXIMUM_PRC)
+            {
+                std::cerr << ERROR_MSG_ARGS << std::endl;
+                return  ERROR;
+            }
+            program = new FbrAlgorithm(blocks_num, f_old, f_new);
+            break;
+        case LFU:
+            program = new LfuAlgorithm(blocks_num);
+            break;
+        case LRU:
+            program = new LruAlgorithm(blocks_num);
+            break;
+        default:
             std::cerr << ERROR_MSG_ARGS << std::endl;
             return  ERROR;
-        }
     }
-//    cache =(char**) std::malloc(blocks_num * sizeof(char**));
     return 0;
 }
 

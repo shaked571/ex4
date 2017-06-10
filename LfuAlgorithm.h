@@ -7,7 +7,7 @@
 
 #include "Algorithm.h"
 
-class LfuAlgorithm :Algorithm{
+class LfuAlgorithm :public Algorithm{
 public:
     LfuAlgorithm(int blocks_num);
 

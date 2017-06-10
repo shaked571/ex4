@@ -6,6 +6,7 @@
 #define EX4_ALGORITHM_H
 
 #include <vector>
+#include <bits/unordered_map.h>
 #include "CacheFS.h"
 #include "Block.h"
 class Algorithm
@@ -18,6 +19,7 @@ public:
 protected:
     int blockNum;
     std::vector<Block*> vectorOfBlocks;
+    std::unordered_map<char*, std::vector<int>> pathOpenedeMap;
 
 };
 

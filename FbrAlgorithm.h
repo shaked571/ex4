@@ -7,7 +7,7 @@
 
 #include "Algorithm.h"
 
-class FbrAlgorithm :Algorithm{
+class FbrAlgorithm :public Algorithm{
 public:
     FbrAlgorithm(int blocks_num,double f_old , double f_new );
 
