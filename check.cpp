@@ -19,9 +19,8 @@ int main(int argc, char* argv[])
 {
     open(argv[0],  O_RDONLY | O_DIRECT | O_SYNC);
     std::cout << "Hello, World!" << std::endl;
-    std::cout <<"this is LRU "<<LRU <<" and this baby is LFU and other gut"<<LFU<<FBR<<std::endl;
-
-    std::cout <<97 * 0.5;
+//    std::cout <<"this is LRU "<<LRU <<" and this baby is LFU and other gut"<<LFU<<FBR<<std::endl;
+    std::cout <<h<<std::endl;
     void* buffer = aligned_alloc(BLOCKSIZE , BLOCKSIZE);
     int f = open("/tmp/README.txt", O_RDONLY|O_SYNC|O_DIRECT);
     std::cout << pread(f, buffer, BLOCKSIZE , BLOCKSIZE) << std::endl;

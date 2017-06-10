@@ -36,8 +36,6 @@ std::string const ERROR_MSG_ARGS = "Error occurred : invalid Argument";
 
 Algorithm* program;
 
-
-
 //##################################################################################################################
 //Function
 
