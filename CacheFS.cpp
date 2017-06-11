@@ -255,7 +255,7 @@ For FBR use the LRU order (the order of the stack).
 
 Notes:
 	1. If log_path is a path to existed file - the function will append the cache
-	   state (described above) to the cache.
+	   state (described above) to the log.
 	   Otherwise, if the path is valid, but the file doesn't exist -
 	   a new file will be created.
 	   For example, if "/tmp" contains a single folder named "folder", then
@@ -293,7 +293,7 @@ in the cache (and therefore we didn't fetch them from the disk again).
 
 Notes:
 	1. If log_path is a path to existed file - the function will append the cache
-	   state (described above) to the cache.
+	   state (described above) to the log.
 	   Otherwise, if the path is valid, but the file doesn't exist -
 	   a new file will be created.
 	   For example, if "/tmp" contains a single folder named "folder", then
