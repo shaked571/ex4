@@ -163,7 +163,7 @@ int CacheFS_destroy()
 int CacheFS_open(const char *pathname)
 {
     char * full_path = realpath(pathname, NULL);
-    if(realpath(argv[1], NULL) == nullptr)
+    if(realpath(pathname, NULL) == nullptr)
     {
         std::cerr<< "Error: invalid path" <<std::endl; //TODO need to delete in the end!
         return ERROR;

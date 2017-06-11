@@ -23,7 +23,10 @@ protected:
     int blksize;
     int blockNum;
     std::vector<Block*> vectorOfBlocks;
-    std::unordered_map<int, std::string> *pathOpenedMap;
+    std::unordered_map<int, std::string> *fidToPath;
+
+    std::unordered_map<std::string, std::vector<int>> *pathOpenedMap;
+    std::vector<int>* openFile;
 
 };
 

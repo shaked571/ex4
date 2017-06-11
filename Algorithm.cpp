@@ -12,14 +12,17 @@ Algorithm::Algorithm(int blocks_num):blockNum(blocks_num)
     struct stat fi;
     stat("/tmp", &fi);
     blksize = fi.st_blksize;
-    pathOpenedMap  =  new std::unordered_map<int, std::string>();
+    pathOpenedMap  =  new std::unordered_map<std::string, std::vector<int>>();
+    fidToPath = new std::unordered_map<int, std::string>();
 
 }
 
 Algorithm::~Algorithm()
 {
     delete(pathOpenedMap);
+    delete(fidToPath);
     pathOpenedMap->clear();
+    fidToPath->clear();
 }
 
 int Algorithm::programOpen(std::string pathName) {
@@ -27,10 +30,10 @@ int Algorithm::programOpen(std::string pathName) {
     int fid = open(pathName.c_str(), O_RDONLY|O_SYNC|O_DIRECT);
     if(fid  == ERROR)
     {
-        return  ERROR;
+        return ERROR;
     }
-    pathOpenedMap[fid] = pathName;
-    return 0;
+    fidToPath->insert(std::make_pair(fid, pathName));
+    return fid;
 
 }
 
