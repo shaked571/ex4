@@ -12,6 +12,9 @@
 #include <sys/stat.h>
 #include <zconf.h>
 #include <stdlib.h>
+#include <iostream>     // std::cout
+#include <fstream>      // std::ifstream
+
 class Algorithm
 {
 public:
@@ -25,7 +28,7 @@ protected:
     std::vector<Block*> vectorOfBlocks;
     std::unordered_map<int, std::string> *fidToPath;
 
-    std::unordered_map<std::string, std::vector<int>> *pathOpenedMap;
+    std::unordered_map<std::string, std::vector<Block*>> *pathOpenedMap;
     std::vector<int>* openFile;
 
 };
