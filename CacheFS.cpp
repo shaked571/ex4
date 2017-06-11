@@ -160,8 +160,24 @@ int CacheFS_destroy()
 			2. Invalid pathname. Pay attention that we support only files under
 			   "/tmp" due to the use of NFS in the Aquarium.
  */
-int CacheFS_open(const char *pathname) {
-    return 0;
+int CacheFS_open(const char *pathname)
+{
+    char * full_path = realpath(pathname, NULL);
+    if(realpath(argv[1], NULL) == nullptr)
+    {
+        std::cerr<< "Error: invalid path" <<std::endl; //TODO need to delete in the end!
+        return ERROR;
+    }
+    std::string strFullPath = (std::string)full_path;
+    if(strFullPath.find("/tmp") != 0)
+    {
+        std::cerr<< "Error: the path"<<strFullPath<< "doesnt from tmp" <<std::endl; //TODO need to delete in the end!
+        return ERROR;
+    }
+
+    int fid = program->programOpen(strFullPath);
+    free(full_path);
+    return fid;
 }
 
 
@@ -216,10 +232,11 @@ int CacheFS_pread(int file_id, void *buf, size_t count, off_t offset) {
 
     if(buf == NULL || offset < 0 )
     {
-        std::cerr <<"in CacheFS_pread" <<ERROR_MSG_ARGS << std::endl;
+        std::cerr <<"in CacheFS_pread" <<ERROR_MSG_ARGS << std::endl; //TODO delete in the end!
         return ERROR;
     }
-    return 0;
+    int numOfBytesRead = program->ChachePread(file_id, buf, count, offset );
+    return numOfBytesRead;
 }
 
 
