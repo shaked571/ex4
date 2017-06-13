@@ -8,6 +8,8 @@
 
 LruAlgorithm::LruAlgorithm(int blocks_num) :Algorithm(blocks_num)
 {
+    oldPartitionFinishLocation = blocks_num;
+    newPartitionFinishLocation = blocks_num - 1;
 
 }
 
@@ -46,15 +48,15 @@ LruAlgorithm::LruAlgorithm(int blocks_num) :Algorithm(blocks_num)
 int LruAlgorithm::ChachePread(int file_id, void *buf, size_t count, off_t offset)
 {
 
-    const int key = file_id;
-    std::string fullPath;
-    fullPath = fidToPath->at(key);
-    void* buffer = aligned_alloc(blksize , blksize);
-    std::cout << pread(file_id, buffer, blksize, 0) << std::endl;
-    std::cout << (char*)buffer << std::endl;
-    if(vectorOfBlocks.size() < blockNum)
-    {
-
-    }
+//    const int key = file_id;
+//    std::string fullPath;
+//    fullPath = fidToPath->at(key);
+//    void* buffer = aligned_alloc(blksize , blksize);
+//    std::cout << pread(file_id, buffer, blksize, 0) << std::endl;
+//    std::cout << (char*)buffer << std::endl;
+//    if(vectorOfBlocks.size() < blockNum)
+//    {
+//
+//    }
     return 0;
 }

@@ -5,7 +5,7 @@
 #include "Algorithm.h"
 #include <stdio.h>
 #include <cstdlib>
-
+#include <unistd.h>
 
 
 #define ERROR -1
@@ -66,7 +66,23 @@ int Algorithm::ChachePread(int file_id, void *buf, size_t count, off_t offset)
         unsigned long pos = (unsigned long) buf;//saving the position
         if (vectorOfBlocksOfTheFid[i] != nullptr)//need to verify
         {
-            std::memcpy()
+            if(isInCache(path, i))
+            {
+                //TODO implementation is needed of:
+                // 1. put the memory from cache to the buffer
+                // 2. if the block location not in the begin do ++ to the freq (using upFreq() )
+                //pread(file_id, buf + pos, blksize, offset + pos);//TODO i thimk it is not right- Elad- need to chandge the syntax
+            }
+            else
+            {
+                char * memChunk;//TODO put the memory in the block
+                Block * block  = new Block(memChunk, path, i);
+                insertBlock(block);
+            }
+
+
+
+           // std::memcpy()
             //put the block in the buf usr memcopy and  starting from the last pos +
         }
     }
@@ -84,6 +100,18 @@ int Algorithm::ChachePread(int file_id, void *buf, size_t count, off_t offset)
 
     }
  */
+    return 0;
+}
+
+bool Algorithm::isInCache(std::string filePath, int blockNum)
+{
+    Block *block = ((*pathToVectorOfBlocks)[filePath])[blockNum];
+    return block != nullptr;
+}
+
+int Algorithm::insertBlock(Block)
+{
+    for (int i = )
     return 0;
 }
 
