@@ -4,6 +4,9 @@
 
 #include "Algorithm.h"
 #include <stdio.h>
+#include <cstdlib>
+
+
 
 #define ERROR -1
 Algorithm::Algorithm(int blocks_num):blockNum(blocks_num)
@@ -63,7 +66,7 @@ int Algorithm::ChachePread(int file_id, void *buf, size_t count, off_t offset)
         unsigned long pos = (unsigned long) buf;//saving the position
         if (vectorOfBlocksOfTheFid[i] != nullptr)//need to verify
         {
-            memcpy()
+            std::memcpy()
             //put the block in the buf usr memcopy and  starting from the last pos +
         }
     }

@@ -4,4 +4,20 @@
 
 #include "Block.h"
 
-Block::Block() {}
+Block::Block(char* memoryU) :memory(memory)
+{
+    freq = 1;
+}
+
+
+unsigned int Block::getFreq() const {
+    return freq;
+}
+
+char *Block::getMemory() const {
+    return memory;
+}
+
+void Block::upFreq() {
+    freq++;
+}

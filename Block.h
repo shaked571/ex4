@@ -1,4 +1,5 @@
 //
+
 // Created by shaked571 on 6/10/17.
 //
 
@@ -14,9 +15,19 @@
 class Block
 {
 
-
 public:
-    Block();
+    Block(char* memoryU);
+
+    char *getMemory() const;
+
+    unsigned int getFreq() const;
+
+    void upFreq();
+
+
+private:
+    unsigned int freq;
+    char * memory;
 };
 
 
