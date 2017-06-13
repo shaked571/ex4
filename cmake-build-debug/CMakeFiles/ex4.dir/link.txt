@@ -1,1 +1,1 @@
-/usr/bin/c++    -std=c++11 -g   CMakeFiles/ex4.dir/check.cpp.o CMakeFiles/ex4.dir/CacheFS.cpp.o  -o ex4 
+/usr/bin/c++    -std=c++11 -g   CMakeFiles/ex4.dir/check.cpp.o CMakeFiles/ex4.dir/CacheFS.cpp.o CMakeFiles/ex4.dir/Algorithm.cpp.o CMakeFiles/ex4.dir/LruAlgorithm.cpp.o CMakeFiles/ex4.dir/LfuAlgorithm.cpp.o CMakeFiles/ex4.dir/FbrAlgorithm.cpp.o CMakeFiles/ex4.dir/Block.cpp.o  -o ex4 

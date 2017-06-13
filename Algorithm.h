@@ -10,7 +10,7 @@
 #include "CacheFS.h"
 #include "Block.h"
 #include <sys/stat.h>
-#include <zconf.h>
+//#include <zconf.h>
 #include <stdlib.h>
 #include <iostream>     // std::cout
 #include <fstream>      // std::ifstream
@@ -19,8 +19,8 @@ class Algorithm
 {
 public:
     Algorithm(int blocks_num);
-    virtual ~Algorithm() = 0;
-    virtual int ChachePread(int file_id, void *buf, size_t count, off_t offset) = 0;
+    virtual ~Algorithm();
+    virtual int ChachePread(int file_id, void *buf, size_t count, off_t offset);
     int programOpen(std::string pathName);
 protected:
     int blksize;
@@ -28,7 +28,7 @@ protected:
     std::vector<Block*> vectorOfBlocks;
     std::unordered_map<int, std::string> *fidToPath;
 
-    std::unordered_map<std::string, std::vector<Block*>> *pathOpenedMap;
+    std::unordered_map<std::string, std::vector<Block*>> *pathToVectorOfBlocks;
     std::vector<int>* openFile;
 
 };

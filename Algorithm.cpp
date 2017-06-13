@@ -3,7 +3,7 @@
 //
 
 #include "Algorithm.h"
-
+#include <stdio.h>
 
 #define ERROR -1
 Algorithm::Algorithm(int blocks_num):blockNum(blocks_num)
@@ -12,16 +12,16 @@ Algorithm::Algorithm(int blocks_num):blockNum(blocks_num)
     struct stat fi;
     stat("/tmp", &fi);
     blksize = fi.st_blksize;
-    pathOpenedMap  =  new std::unordered_map<std::string, std::vector<Block*>>();
+    pathToVectorOfBlocks  =  new std::unordered_map<std::string, std::vector<Block*>>();
     fidToPath = new std::unordered_map<int, std::string>();
 
 }
 
 Algorithm::~Algorithm()
 {
-    delete(pathOpenedMap);
+    delete(pathToVectorOfBlocks);
     delete(fidToPath);
-    pathOpenedMap->clear();
+    pathToVectorOfBlocks->clear();
     fidToPath->clear();
 }
 
@@ -35,17 +35,53 @@ int Algorithm::programOpen(std::string pathName) {
     std::ifstream is(pathName, std::ifstream::ate | std::ifstream::binary);
     if(is)
     {
-          fileLength = is.tellg();
+          fileLength = (unsigned long)is.tellg();
     } else
     {
         return ERROR;
     }
     unsigned long  numOfMaxBlock = ((fileLength + blksize  - 1) / blksize);//To round up the result
-    fidToPath->insert(std::make_pair(fid, pathName));
-    std::vector<Block*> *fileBlocks = new std::vector<Block*> (numOfMaxBlock);
-    pathOpenedMap->insert(std::make_pair(pathName, fileBlocks)); //TODO Elad!i wrote this lines fast- ith ink they are ok-double check me
+    (*fidToPath)[fid] = pathName;
+    std::vector<Block*> fileBlocks(numOfMaxBlock);
+    (*pathToVectorOfBlocks)[pathName] = fileBlocks;
+    auto pair = std::make_pair(pathName, fileBlocks);
     return fid;
 
+}
+
+int Algorithm::ChachePread(int file_id, void *buf, size_t count, off_t offset)
+{
+
+    std::string path = (*fidToPath)[file_id];
+    auto vectorOfBlocksOfTheFid = (*pathToVectorOfBlocks)[path];
+
+    int i , end;
+    i =(int)(offset/blksize);
+    end = (int)((offset + count) / blksize);
+    for (i; i < end ; ++i)
+    {
+        unsigned long pos = (unsigned long) buf;//saving the position
+        if (vectorOfBlocksOfTheFid[i] != nullptr)//need to verify
+        {
+            memcpy()
+            //put the block in the buf usr memcopy and  starting from the last pos +
+        }
+    }
+
+/**
+ * use memcopy
+ * const int key = file_id;
+    std::string fullPath;
+    fullPath = fidToPath->at(key);
+    void* buffer = aligned_alloc(blksize , blksize);
+    std::cout << pread(file_id, buffer, blksize, 0) << std::endl;
+    std::cout << (char*)buffer << std::endl;
+    if(vectorOfBlocks.size() < blockNum)
+    {
+
+    }
+ */
+    return 0;
 }
 
 

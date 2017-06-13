@@ -84,16 +84,43 @@
 				</MakeCommands>
 			</Target>
 		</Build>
+		<Unit filename="/home/shaked/CLionProjects/ex4/Algorithm.cpp">
+			<Option target="ex4"/>
+		</Unit>
+		<Unit filename="/home/shaked/CLionProjects/ex4/Algorithm.h">
+			<Option target="ex4"/>
+		</Unit>
+		<Unit filename="/home/shaked/CLionProjects/ex4/Block.cpp">
+			<Option target="ex4"/>
+		</Unit>
+		<Unit filename="/home/shaked/CLionProjects/ex4/Block.h">
+			<Option target="ex4"/>
+		</Unit>
 		<Unit filename="/home/shaked/CLionProjects/ex4/CacheFS.cpp">
 			<Option target="ex4"/>
 		</Unit>
 		<Unit filename="/home/shaked/CLionProjects/ex4/CacheFS.h">
 			<Option target="ex4"/>
 		</Unit>
-		<Unit filename="/home/shaked/CLionProjects/ex4/check.cpp">
+		<Unit filename="/home/shaked/CLionProjects/ex4/FbrAlgorithm.cpp">
 			<Option target="ex4"/>
 		</Unit>
-		<Unit filename="/home/shaked/CLionProjects/ex4/check.h">
+		<Unit filename="/home/shaked/CLionProjects/ex4/FbrAlgorithm.h">
+			<Option target="ex4"/>
+		</Unit>
+		<Unit filename="/home/shaked/CLionProjects/ex4/LfuAlgorithm.cpp">
+			<Option target="ex4"/>
+		</Unit>
+		<Unit filename="/home/shaked/CLionProjects/ex4/LfuAlgorithm.h">
+			<Option target="ex4"/>
+		</Unit>
+		<Unit filename="/home/shaked/CLionProjects/ex4/LruAlgorithm.cpp">
+			<Option target="ex4"/>
+		</Unit>
+		<Unit filename="/home/shaked/CLionProjects/ex4/LruAlgorithm.h">
+			<Option target="ex4"/>
+		</Unit>
+		<Unit filename="/home/shaked/CLionProjects/ex4/check.cpp">
 			<Option target="ex4"/>
 		</Unit>
 		<Unit filename="/home/shaked/CLionProjects/ex4/CMakeLists.txt">

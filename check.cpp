@@ -1,6 +1,5 @@
 #include <stdlib.h>
 #include <fcntl.h>
-#include <zconf.h>
 #include <mm_malloc.h>
 #include <malloc.h>
 #include <iostream>
@@ -9,6 +8,7 @@
 
 #include <sys/stat.h>
 #include <fcntl.h>
+#include <unistd.h>
 #include "CacheFS.h"
 #define BLOCKSIZE 512
 using namespace std;
@@ -22,7 +22,7 @@ int main(int argc, char* argv[])
 //    std::cout <<"this is LRU "<<LRU <<" and this baby is LFU and other gut"<<LFU<<FBR<<std::endl;
     struct stat fi;
     stat("/tmp", &fi);
-    int blksize = fi.st_blksize;
+    int blksize = (int) fi.st_blksize;
     char * full_path = realpath(argv[1], NULL);
     if(realpath(argv[1], NULL) == nullptr)
     {

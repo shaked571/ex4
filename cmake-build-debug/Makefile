@@ -123,6 +123,60 @@ ex4/fast:
 	$(MAKE) -f CMakeFiles/ex4.dir/build.make CMakeFiles/ex4.dir/build
 .PHONY : ex4/fast
 
+Algorithm.o: Algorithm.cpp.o
+
+.PHONY : Algorithm.o
+
+# target to build an object file
+Algorithm.cpp.o:
+	$(MAKE) -f CMakeFiles/ex4.dir/build.make CMakeFiles/ex4.dir/Algorithm.cpp.o
+.PHONY : Algorithm.cpp.o
+
+Algorithm.i: Algorithm.cpp.i
+
+.PHONY : Algorithm.i
+
+# target to preprocess a source file
+Algorithm.cpp.i:
+	$(MAKE) -f CMakeFiles/ex4.dir/build.make CMakeFiles/ex4.dir/Algorithm.cpp.i
+.PHONY : Algorithm.cpp.i
+
+Algorithm.s: Algorithm.cpp.s
+
+.PHONY : Algorithm.s
+
+# target to generate assembly for a file
+Algorithm.cpp.s:
+	$(MAKE) -f CMakeFiles/ex4.dir/build.make CMakeFiles/ex4.dir/Algorithm.cpp.s
+.PHONY : Algorithm.cpp.s
+
+Block.o: Block.cpp.o
+
+.PHONY : Block.o
+
+# target to build an object file
+Block.cpp.o:
+	$(MAKE) -f CMakeFiles/ex4.dir/build.make CMakeFiles/ex4.dir/Block.cpp.o
+.PHONY : Block.cpp.o
+
+Block.i: Block.cpp.i
+
+.PHONY : Block.i
+
+# target to preprocess a source file
+Block.cpp.i:
+	$(MAKE) -f CMakeFiles/ex4.dir/build.make CMakeFiles/ex4.dir/Block.cpp.i
+.PHONY : Block.cpp.i
+
+Block.s: Block.cpp.s
+
+.PHONY : Block.s
+
+# target to generate assembly for a file
+Block.cpp.s:
+	$(MAKE) -f CMakeFiles/ex4.dir/build.make CMakeFiles/ex4.dir/Block.cpp.s
+.PHONY : Block.cpp.s
+
 CacheFS.o: CacheFS.cpp.o
 
 .PHONY : CacheFS.o
@@ -149,6 +203,87 @@ CacheFS.s: CacheFS.cpp.s
 CacheFS.cpp.s:
 	$(MAKE) -f CMakeFiles/ex4.dir/build.make CMakeFiles/ex4.dir/CacheFS.cpp.s
 .PHONY : CacheFS.cpp.s
+
+FbrAlgorithm.o: FbrAlgorithm.cpp.o
+
+.PHONY : FbrAlgorithm.o
+
+# target to build an object file
+FbrAlgorithm.cpp.o:
+	$(MAKE) -f CMakeFiles/ex4.dir/build.make CMakeFiles/ex4.dir/FbrAlgorithm.cpp.o
+.PHONY : FbrAlgorithm.cpp.o
+
+FbrAlgorithm.i: FbrAlgorithm.cpp.i
+
+.PHONY : FbrAlgorithm.i
+
+# target to preprocess a source file
+FbrAlgorithm.cpp.i:
+	$(MAKE) -f CMakeFiles/ex4.dir/build.make CMakeFiles/ex4.dir/FbrAlgorithm.cpp.i
+.PHONY : FbrAlgorithm.cpp.i
+
+FbrAlgorithm.s: FbrAlgorithm.cpp.s
+
+.PHONY : FbrAlgorithm.s
+
+# target to generate assembly for a file
+FbrAlgorithm.cpp.s:
+	$(MAKE) -f CMakeFiles/ex4.dir/build.make CMakeFiles/ex4.dir/FbrAlgorithm.cpp.s
+.PHONY : FbrAlgorithm.cpp.s
+
+LfuAlgorithm.o: LfuAlgorithm.cpp.o
+
+.PHONY : LfuAlgorithm.o
+
+# target to build an object file
+LfuAlgorithm.cpp.o:
+	$(MAKE) -f CMakeFiles/ex4.dir/build.make CMakeFiles/ex4.dir/LfuAlgorithm.cpp.o
+.PHONY : LfuAlgorithm.cpp.o
+
+LfuAlgorithm.i: LfuAlgorithm.cpp.i
+
+.PHONY : LfuAlgorithm.i
+
+# target to preprocess a source file
+LfuAlgorithm.cpp.i:
+	$(MAKE) -f CMakeFiles/ex4.dir/build.make CMakeFiles/ex4.dir/LfuAlgorithm.cpp.i
+.PHONY : LfuAlgorithm.cpp.i
+
+LfuAlgorithm.s: LfuAlgorithm.cpp.s
+
+.PHONY : LfuAlgorithm.s
+
+# target to generate assembly for a file
+LfuAlgorithm.cpp.s:
+	$(MAKE) -f CMakeFiles/ex4.dir/build.make CMakeFiles/ex4.dir/LfuAlgorithm.cpp.s
+.PHONY : LfuAlgorithm.cpp.s
+
+LruAlgorithm.o: LruAlgorithm.cpp.o
+
+.PHONY : LruAlgorithm.o
+
+# target to build an object file
+LruAlgorithm.cpp.o:
+	$(MAKE) -f CMakeFiles/ex4.dir/build.make CMakeFiles/ex4.dir/LruAlgorithm.cpp.o
+.PHONY : LruAlgorithm.cpp.o
+
+LruAlgorithm.i: LruAlgorithm.cpp.i
+
+.PHONY : LruAlgorithm.i
+
+# target to preprocess a source file
+LruAlgorithm.cpp.i:
+	$(MAKE) -f CMakeFiles/ex4.dir/build.make CMakeFiles/ex4.dir/LruAlgorithm.cpp.i
+.PHONY : LruAlgorithm.cpp.i
+
+LruAlgorithm.s: LruAlgorithm.cpp.s
+
+.PHONY : LruAlgorithm.s
+
+# target to generate assembly for a file
+LruAlgorithm.cpp.s:
+	$(MAKE) -f CMakeFiles/ex4.dir/build.make CMakeFiles/ex4.dir/LruAlgorithm.cpp.s
+.PHONY : LruAlgorithm.cpp.s
 
 check.o: check.cpp.o
 
@@ -186,9 +321,24 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
 	@echo "... ex4"
+	@echo "... Algorithm.o"
+	@echo "... Algorithm.i"
+	@echo "... Algorithm.s"
+	@echo "... Block.o"
+	@echo "... Block.i"
+	@echo "... Block.s"
 	@echo "... CacheFS.o"
 	@echo "... CacheFS.i"
 	@echo "... CacheFS.s"
+	@echo "... FbrAlgorithm.o"
+	@echo "... FbrAlgorithm.i"
+	@echo "... FbrAlgorithm.s"
+	@echo "... LfuAlgorithm.o"
+	@echo "... LfuAlgorithm.i"
+	@echo "... LfuAlgorithm.s"
+	@echo "... LruAlgorithm.o"
+	@echo "... LruAlgorithm.i"
+	@echo "... LruAlgorithm.s"
 	@echo "... check.o"
 	@echo "... check.i"
 	@echo "... check.s"
