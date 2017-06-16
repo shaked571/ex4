@@ -7,10 +7,11 @@
 
 #include "Algorithm.h"
 
-class FbrAlgorithm :public Algorithm{
+class CacheAlgorithm :public Algorithm{
 public:
-    FbrAlgorithm(int blocks_num,double f_old , double f_new );
+    CacheAlgorithm(int blocks_num,double f_old , double f_new );
 
+    void addBlockToCache(Block* block);
 
 
 private:

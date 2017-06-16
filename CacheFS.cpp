@@ -7,7 +7,7 @@
 #include "fcntl.h"
 #include "Algorithm.h"
 #include "LfuAlgorithm.h"
-#include "FbrAlgorithm.h"
+#include "CacheAlgorithm.h"
 #include "LruAlgorithm.h"
 #include <string>
 #include <stdio.h>
@@ -35,6 +35,7 @@ std::string const ERROR_MSG_ARGS = "Error occurred : invalid Argument";
 //Global
 
 Algorithm* program;
+int blksize;
 
 //##################################################################################################################
 //Function
@@ -78,28 +79,31 @@ Algorithm* program;
  */
 int CacheFS_init(int blocks_num, cache_algo_t cache_algo, double f_old , double f_new  )
 {
+    std::cout << cache_algo << std::endl;
     if (blocks_num < MINIMUM_BLOCK_NUM)
     {
         std::cerr << ERROR_MSG_ARGS << std::endl;
         return  ERROR;
     }
+
     cache_algo_t  algorithm = cache_algo;
     switch(algorithm)
     {
         case FBR:
-            if(f_old < MINIMUM_PRC || f_new < MINIMUM_PRC || f_new > MAXIMUM_PRC || f_old > MINIMUM_PRC||
+            if(f_old < MINIMUM_PRC || f_new < MINIMUM_PRC || f_new > MAXIMUM_PRC || f_old >
+                                                                                            MAXIMUM_PRC||
                f_new + f_old > MAXIMUM_PRC)
             {
                 std::cerr << ERROR_MSG_ARGS << std::endl;
                 return  ERROR;
             }
-            program = new FbrAlgorithm(blocks_num, f_old, f_new);
+            program = new CacheAlgorithm(blocks_num, f_old, f_new);
             break;
         case LFU:
-            program = new LfuAlgorithm(blocks_num);
+            program = new CacheAlgorithm(blocks_num , 0, 1);
             break;
         case LRU:
-            program = new LruAlgorithm(blocks_num);
+            program = new CacheAlgorithm(blocks_num , 1 , 0);
             break;
         default:
             std::cerr << ERROR_MSG_ARGS << std::endl;
@@ -171,7 +175,9 @@ int CacheFS_open(const char *pathname)
     std::string strFullPath = (std::string)full_path;
     if(strFullPath.find("/tmp") != 0)
     {
-        std::cerr<< "Error: the path"<<strFullPath<< "doesnt from tmp" <<std::endl; //TODO need to delete in the end!
+        std::cerr<< "Error: the path"<<strFullPath<< "isn't from tmp directory" <<std::endl; //TODO
+        // need to
+        // delete in the end!
         return ERROR;
     }
 
@@ -235,7 +241,7 @@ int CacheFS_pread(int file_id, void *buf, size_t count, off_t offset) {
         std::cerr <<"in CacheFS_pread" <<ERROR_MSG_ARGS << std::endl; //TODO delete in the end!
         return ERROR;
     }
-    int numOfBytesRead = program->ChachePread(file_id, buf, count, offset );
+    int numOfBytesRead = program->CachePread(file_id, buf, count, offset);
     return numOfBytesRead;
 }
 

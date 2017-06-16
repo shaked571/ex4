@@ -4,7 +4,8 @@
 
 #include "Block.h"
 
-Block::Block(char* memoryU, std::string path, int blockNum) :memory(memory), filePath(path), blockNum(blockNum)
+Block::Block(void* memoryU, std::string path, int blockNum) :memory(memory), filePath(path),
+                                                          blockNum(blockNum)
 {
     freq = 1;
 }
@@ -14,7 +15,7 @@ unsigned int Block::getFreq() const {
     return freq;
 }
 
-char *Block::getMemory() const {
+void *Block::getMemory() const {
     return memory;
 }
 

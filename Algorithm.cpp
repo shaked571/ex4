@@ -6,6 +6,11 @@
 #include <stdio.h>
 #include <cstdlib>
 #include <unistd.h>
+#include <stdlib.h>
+#include <cstring>
+#include <malloc.h>
+
+using namespace std;
 
 
 #define ERROR -1
@@ -47,73 +52,74 @@ int Algorithm::programOpen(std::string pathName) {
     (*fidToPath)[fid] = pathName;
     std::vector<Block*> fileBlocks(numOfMaxBlock);
     (*pathToVectorOfBlocks)[pathName] = fileBlocks;
-    auto pair = std::make_pair(pathName, fileBlocks);
     return fid;
 
 }
 
-int Algorithm::ChachePread(int file_id, void *buf, size_t count, off_t offset)
+int Algorithm::CachePread(int file_id, void *buf, size_t count, off_t offset)
 {
-
+    string currentData;
     std::string path = (*fidToPath)[file_id];
     auto vectorOfBlocksOfTheFid = (*pathToVectorOfBlocks)[path];
+    string dataToReturn;
 
-    int i , end;
-    i =(int)(offset/blksize);
-    end = (int)((offset + count) / blksize);
-    for (i; i < end ; ++i)
+    int startBlock , currentBlock , endBlock;
+    startBlock =(int)(offset/blksize);
+    currentBlock = startBlock;
+    endBlock = (int)((offset + count) / blksize) + 1;
+    for (currentBlock; currentBlock < endBlock ; ++currentBlock)
     {
-        unsigned long pos = (unsigned long) buf;//saving the position
-        if (vectorOfBlocksOfTheFid[i] != nullptr)//need to verify
-        {
-            if(isInCache(path, i))
-            {
-                //TODO implementation is needed of:
-                // 1. put the memory from cache to the buffer
-                // 2. if the block location not in the begin do ++ to the freq (using upFreq() )
-                //pread(file_id, buf + pos, blksize, offset + pos);//TODO i thimk it is not right- Elad- need to chandge the syntax
+        void *buffer;
+
+        for ( auto i = vectorOfBlocks.begin(); i != vectorOfBlocks.end(); i++ ) {
+            if (path.compare((*i)->getFilePath())){
+                if (blockNum == (*i)->getBlockNum()){
+                    buffer = (*i)->getMemory();
+                    (*i)->upFreq();
+                }
             }
-            else
-            {
-                char * memChunk;//TODO put the memory in the block
-                Block * block  = new Block(memChunk, path, i);
-                insertBlock(block);
-            }
-
-
-
-           // std::memcpy()
-            //put the block in the buf usr memcopy and  starting from the last pos +
         }
+
+        if(!isInCache(path, currentBlock))
+        {
+            buffer = aligned_alloc(blksize , blksize);
+            pread(file_id, buffer, blksize, (currentBlock*blksize));
+            Block * block  = new Block(buffer, path, currentBlock);
+            if ( ((*pathToVectorOfBlocks)[path])[currentBlock] != NULL){
+                delete  ((*pathToVectorOfBlocks)[path])[currentBlock];
+            }
+            ((*pathToVectorOfBlocks)[path])[currentBlock] = block;
+            addBlockToCache(block);
+        }
+        currentData = ((char *)buffer);
+        if (currentBlock == (endBlock - 1)){
+            currentData = currentData.substr(0, (count+offset)%blksize);
+        }
+        if (currentBlock == startBlock){
+            currentData = currentData.substr(((unsigned long)offset)%blksize , currentData.size());
+        }
+        dataToReturn += currentData;
     }
 
-/**
- * use memcopy
- * const int key = file_id;
-    std::string fullPath;
-    fullPath = fidToPath->at(key);
-    void* buffer = aligned_alloc(blksize , blksize);
-    std::cout << pread(file_id, buffer, blksize, 0) << std::endl;
-    std::cout << (char*)buffer << std::endl;
-    if(vectorOfBlocks.size() < blockNum)
-    {
-
-    }
- */
-    return 0;
+    void* toBuf = (void *)currentData.c_str();
+    memcpy(buf , toBuf , currentData.size());
+    return (int)currentData.size();
 }
+
 
 bool Algorithm::isInCache(std::string filePath, int blockNum)
 {
-    Block *block = ((*pathToVectorOfBlocks)[filePath])[blockNum];
-    return block != nullptr;
+
+    for ( auto i = vectorOfBlocks.begin(); i != vectorOfBlocks.end(); i++ ) {
+        if (filePath.compare((*i)->getFilePath())){
+            if (blockNum == (*i)->getBlockNum()){
+                return true;
+            }
+        }
+    }
+    return false;
 }
 
-int Algorithm::insertBlock(Block)
-{
-    for (int i = )
-    return 0;
-}
 
 
 

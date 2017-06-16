@@ -20,12 +20,13 @@ class Algorithm
 public:
     Algorithm(int blocks_num);
     virtual ~Algorithm();
-    virtual int ChachePread(int file_id, void *buf, size_t count, off_t offset);
+    virtual void addBlockToCache(Block* block) = 0;
+    int CachePread(int file_id, void *buf, size_t count, off_t offset);
     int programOpen(std::string pathName);
     bool isInCache(std::string filePath, int blockNum);
-    int insertBlock(Block);
+
 protected:
-    int blksize;
+    unsigned int blksize;
     int blockNum;
     double oldPartitionFinishLocation;
     double newPartitionFinishLocation;

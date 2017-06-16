@@ -16,9 +16,9 @@ class Block
 {
 
 public:
-    Block(char* memoryU, std::string path, int blocNum);
+    Block(void* memoryU, std::string path, int blocNum);
 
-    char *getMemory() const;
+    void *getMemory() const;
 
     unsigned int getFreq() const;
 
@@ -27,7 +27,7 @@ public:
 
 private:
     unsigned int freq;
-    char * memory;
+    void * memory;
     std::string filePath;
     int blockNum;
 public:

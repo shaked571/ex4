@@ -12,8 +12,7 @@ class LruAlgorithm:public Algorithm
 
 public:
     LruAlgorithm(int blocks_num);
-
-    int ChachePread(int file_id, void *buf, size_t count, off_t offset)override;
+    void addBlockToCache(Block* block);
 };
 
 

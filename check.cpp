@@ -4,11 +4,17 @@
 #include <malloc.h>
 #include <iostream>
 #include <limits.h>
+#include "Algorithm.h"
+#include <stdio.h>
+#include <cstdlib>
+#include <unistd.h>
 
 
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <unistd.h>
+#include <ios>
+#include <bits/ios_base.h>
 #include "CacheFS.h"
 #define BLOCKSIZE 512
 using namespace std;
@@ -23,14 +29,37 @@ int main(int argc, char* argv[])
     struct stat fi;
     stat("/tmp", &fi);
     int blksize = (int) fi.st_blksize;
-    char * full_path = realpath(argv[1], NULL);
-    if(realpath(argv[1], NULL) == nullptr)
-    {
-        std::cerr<<"ME SAD"<<std::endl;
-        return -1;
-    }
 
-    cout<<"this is the blksize: "<<blksize<<endl;
+
+    CacheFS_init(100 , LFU , 0.3333 , 0.5);
+    int a = CacheFS_open("/tmp/README");
+
+    void* buffer = aligned_alloc(blksize , blksize);
+
+    int b = CacheFS_pread(a , buffer , 50 , 200);
+
+    cout << "num of bytes read " << b << endl;
+    cout << (char*)(buffer) << endl;
+
+    b = CacheFS_pread(a , buffer , 100 , 200);
+
+    cout << "num of bytes read " << b << endl;
+    cout << (char*)(buffer) << endl;
+
+
+
+
+
+//    char* full_path = realpath(argv[1], NULL);
+//    if(realpath(argv[1], NULL) == nullptr)
+//    {
+//        std::cerr<<"ME SAD"<<std::endl;
+//        return -1;
+//    }
+//    cout << "this is the real path" << full_path << endl;
+//    cout<<"this is the blksize: "<<blksize<<endl;
+
+
     /**
     std::string strFullPath = (std::string) full_path;
     free(full_path);
@@ -50,16 +79,27 @@ int main(int argc, char* argv[])
 //    }
 //
 
-
-
-
-    std::cout <<"SHOW TIME"<<std::endl;
-    void* buffer = aligned_alloc(blksize , blksize);
-    int f = open("/tmp/README.txt", O_RDONLY|O_SYNC|O_DIRECT);
-    std::cout << "this is pread: "<<pread(f, buffer, blksize, 0) << std::endl;
-    std::cout <<"this is buffer: "<< (char*)buffer << std::endl;
-    close(f);
-    free(buffer);
+//    unsigned long fileLength;
+//    blksize = 512;
+//
+//
+//    std::cout <<"SHOW TIME"<<std::endl;
+//
+//    buffer = aligned_alloc(blksize , blksize);
+//    int f = open("/tmp/README", O_RDONLY|O_SYNC|O_DIRECT);
+//
+//
+//    std::ifstream is("/tmp/README", std::ifstream::ate | std::ifstream::binary);
+//    if(is)
+//    {
+//        fileLength = (unsigned long)is.tellg();
+//        cout << "File length is: " << fileLength << endl;
+//    }
+//    cout << "This is the block size "  << blksize << endl;
+//    std::cout << "this is pread: "<<pread(f, buffer, blksize, 0) << std::endl;
+//    std::cout <<"this is buffer: "<< (char*)buffer << std::endl;
+//    close(f);
+//    free(buffer);
     return 0;
 
     return 0;

@@ -10,6 +10,7 @@
 class LfuAlgorithm :public Algorithm{
 public:
     LfuAlgorithm(int blocks_num);
+    void addBlockToCache(Block* block);
 
 
 
