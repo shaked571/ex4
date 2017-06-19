@@ -5,10 +5,13 @@
       <sourceFolder url="file://$MODULE_DIR$/CacheFS.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/CMakeLists.txt" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Algorithm.cpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Algorithm.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/CacheAlgorithm.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/CacheFS.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/LruAlgorithm.cpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/LruAlgorithm.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/CacheAlgorithm.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Block.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Algorithm.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Block.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/check.cpp" isTestSource="false" />
     </content>
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module-library">

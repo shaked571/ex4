@@ -23,6 +23,13 @@ void CacheAlgorithm::addBlockToCache(Block *block)
     {
         auto min = std::min_element(vectorOfBlocks.begin(), endOfOld , [](Block *a, Block * b)
                                     { return a->getFreq() < b->getFreq(); });
+
+
+        string pathOfMin = (*min)->getFilePath();
+
+
+
+
         vectorOfBlocks.erase(min);
         vectorOfBlocks.push_back(block);
     }
