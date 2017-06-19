@@ -78,6 +78,7 @@ int main(int argc, char *argv[])
             std::cerr << "Error in CacheFS_close while closing legal file" << std::endl;
             return -1;
         }
+
         // Close an already closed file.
         if (CacheFS_close(f2) != -1)
         {

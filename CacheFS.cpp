@@ -148,27 +148,34 @@ int CacheFS_destroy()
  */
 int CacheFS_open(const char *pathname)
 {
-    std::cout <<"This is the path name : " << pathname << std::endl;
-    char * full_path = realpath(pathname, NULL);
-    std::cout <<"This is the full path name : " << full_path << std::endl;
+    if (FILE *file = fopen(pathname, "r")) {
+        std::cout <<"This is the path name : " << pathname << std::endl;
+        char * full_path = realpath(pathname, NULL);
+        std::cout <<"This is the full path name : " << full_path << std::endl;
 
-    if(full_path == nullptr)
-    {
-        std::cerr<< "Error: invalid path" <<std::endl; //TODO need to delete in the end!
-        return ERROR;
-    }
-    std::string strFullPath = (std::string)full_path;
-    if(strFullPath.find("/tmp") != 0)
-    {
-        std::cerr<< "Error: the path"<<strFullPath<< "isn't from tmp directory" <<std::endl; //TODO
-        // need to
-        // delete in the end!
-        return ERROR;
+        if(full_path == nullptr)
+        {
+            std::cerr<< "Error: invalid path" <<std::endl; //TODO need to delete in the end!
+            return ERROR;
+        }
+
+        std::string strFullPath = (std::string)full_path;
+        if(strFullPath.find("/tmp") != 0)
+        {
+            std::cerr<< "Error: the path"<<strFullPath<< "isn't from tmp directory" <<std::endl; //TODO
+            // need to
+            // delete in the end!
+            return ERROR;
+        }
+
+        int fid = program->programOpen(strFullPath);
+        free(full_path);
+        return fid;
+
+    } else {
+        return -1;
     }
 
-    int fid = program->programOpen(strFullPath);
-    free(full_path);
-    return fid;
 }
 
 

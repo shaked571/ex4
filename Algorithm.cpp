@@ -86,9 +86,7 @@ int Algorithm::CachePread(int file_id, void *buf, size_t count, off_t offset)
                 return ERROR;
             }
             Block * block  = new Block(buffer, path, currentBlock);
-
-            bool check = ((*pathToVectorOfBlocks)[path])[currentBlock];
-
+            ((*pathToVectorOfBlocks)[path])[currentBlock] = -1;
             addBlockToCache(block);
             MissNumPlus();
         } else
@@ -105,19 +103,20 @@ int Algorithm::CachePread(int file_id, void *buf, size_t count, off_t offset)
                         {
                             (*i)->upFreq();
                         }
+                        counter++;
+                        HitsNumPlus();
                         break;
                     }
                 }
-                counter++;
             }
-            HitsNumPlus();
         }
         currentData = ((char *)buffer);
         if (currentBlock == (endBlock - 1)){
             currentData = currentData.substr(0, (count+offset)%blksize);
         }
         if (currentBlock == startBlock){
-            currentData = currentData.substr(((unsigned long)offset)%blksize , currentData.size());
+            currentData = currentData.substr(((unsigned long)offset)%blksize , currentData.size
+                    ());
         }
         dataToReturn += currentData;
     }
@@ -127,7 +126,7 @@ int Algorithm::CachePread(int file_id, void *buf, size_t count, off_t offset)
     if (isAllocated){
         free(buffer);
     }
-    return (int)currentData.size();
+    return (int)dataToReturn.size();
 }
 
 bool Algorithm::isInCache(std::string filePath, int blockNum)
@@ -193,7 +192,6 @@ int Algorithm::closeFile(int fileId)
         pathToVectorOfBlocks->erase(path);
         return 0;
     }
-
 }
 
 int Algorithm::getHitsNum() const
