@@ -8,7 +8,7 @@
 #include "fcntl.h"
 #include "Algorithm.h"
 #include "CacheAlgorithm.h"
-#include <boost/filesystem.hpp>
+//#include <boost/filesystem.hpp>
 #include <string>
 #include <stdio.h>
 #include <stdlib.h>
@@ -97,13 +97,13 @@ int CacheFS_init(int blocks_num, cache_algo_t cache_algo, double f_old , double 
                 std::cerr << ERROR_MSG_ARGS << std::endl;
                 return  ERROR;
             }
-            program = new CacheAlgorithm(blocks_num, f_old, f_new);
+            program = new CacheAlgorithm(blocks_num, f_old, f_new , FBR);
             break;
         case LFU:
-            program = new CacheAlgorithm(blocks_num , 0, 1);
+            program = new CacheAlgorithm(blocks_num , 0, 1 , LFU);
             break;
         case LRU:
-            program = new CacheAlgorithm(blocks_num , 1 , 0);
+            program = new CacheAlgorithm(blocks_num , 1 , 0 , LRU);
             break;
         default:
             std::cerr << ERROR_MSG_ARGS << std::endl;
@@ -283,10 +283,10 @@ Notes:
  */
 int CacheFS_print_cache(const char *log_path)
 {
-    if(!(boost::filesystem::exists(log_path)))
-    {
-        return ERROR;
-    }
+//    if(!(boost::filesystem::exists(log_path)))
+//    {
+//        return ERROR;
+//    }
     std::ofstream ofs(log_path, std::ios_base::out | std::ios_base::app);
     try
     {
@@ -300,7 +300,6 @@ int CacheFS_print_cache(const char *log_path)
             default:
                 break;
         }
-        ofs<<
     }catch (std::exception &e)
     {
         return ERROR;
