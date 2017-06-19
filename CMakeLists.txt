@@ -3,7 +3,7 @@ project(ex4)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
-set(SOURCE_FILES check.cpp CacheFS.h CacheFS.cpp Algorithm.cpp Algorithm.h Block.cpp Block.h)
+set(SOURCE_FILES Test1.cpp CacheFS.h CacheFS.cpp Algorithm.cpp Algorithm.h Block.cpp Block.h)
 add_executable(ex4 ${SOURCE_FILES})
 
 

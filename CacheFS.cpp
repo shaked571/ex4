@@ -148,7 +148,10 @@ int CacheFS_destroy()
  */
 int CacheFS_open(const char *pathname)
 {
+    std::cout <<"This is the path name : " << pathname << std::endl;
     char * full_path = realpath(pathname, NULL);
+    std::cout <<"This is the full path name : " << full_path << std::endl;
+
     if(full_path == nullptr)
     {
         std::cerr<< "Error: invalid path" <<std::endl; //TODO need to delete in the end!
@@ -182,8 +185,7 @@ int CacheFS_open(const char *pathname)
  */
 int CacheFS_close(int file_id)
 {
-
-    return 0;
+    return program->closeFile(file_id);
 }
 
 

@@ -32,6 +32,8 @@ public:
 
     void MissNumPlus();
 
+    int closeFile(int fileId);
+
 private:
     unsigned int blksize;
     int blockNum;

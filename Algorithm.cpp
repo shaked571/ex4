@@ -81,9 +81,14 @@ int Algorithm::CachePread(int file_id, void *buf, size_t count, off_t offset)
         {
             buffer = aligned_alloc(blksize , blksize);
             isAllocated = true;
-            pread(file_id, buffer, blksize, (currentBlock*blksize));
+            ssize_t readFile = pread(file_id, buffer, blksize, (currentBlock*blksize));
+            if (readFile < 0){
+                return ERROR;
+            }
             Block * block  = new Block(buffer, path, currentBlock);
-            ((*pathToVectorOfBlocks)[path])[currentBlock] = block;
+
+            bool check = ((*pathToVectorOfBlocks)[path])[currentBlock];
+
             addBlockToCache(block);
             MissNumPlus();
         } else
@@ -127,7 +132,13 @@ int Algorithm::CachePread(int file_id, void *buf, size_t count, off_t offset)
 
 bool Algorithm::isInCache(std::string filePath, int blockNum)
 {
-    return (*pathToVectorOfBlocks)[filePath][blockNum];
+    if ( pathToVectorOfBlocks->find(filePath) == pathToVectorOfBlocks->end())
+    {
+        return false;
+    }else
+    {
+        return (*pathToVectorOfBlocks)[filePath][blockNum];
+    }
 }
 
 
@@ -161,6 +172,28 @@ std::vector<Block *> Algorithm::arrangedVec() {
         std::sort(sortVec.begin(), sortVec.end());
         return sortVec;
     }
+}
+
+int Algorithm::closeFile(int fileId)
+{
+    if ( fidToPath->find(fileId) == fidToPath->end()){
+        return -1;
+    } else {
+        string path = fidToPath->at(fileId);
+        int fileClosing = close(fileId);
+        if (fileClosing == -1){
+            return -1;
+        }
+        fidToPath->erase(fileId);
+        for (auto iter = fidToPath->begin() ; iter != fidToPath->end() ;++iter){
+            if (path.compare((*iter).second)){
+                return 0;
+            }
+        }
+        pathToVectorOfBlocks->erase(path);
+        return 0;
+    }
+
 }
 
 int Algorithm::getHitsNum() const
