@@ -1,20 +1,8 @@
-//
-// Created by shaked on 09/06/17.
-//
-
 #include <iostream>
 #include <fstream>
 #include "CacheFS.h"
-#include "fcntl.h"
 #include "Algorithm.h"
-#include "CacheAlgorithm.h"
 //#include <boost/filesystem.hpp>
-#include <string>
-#include <stdio.h>
-#include <stdlib.h>
-#include <malloc.h>
-#include <cstdio>
-#include <cstdlib>
 
 
 //##################################################################################################################
@@ -97,13 +85,13 @@ int CacheFS_init(int blocks_num, cache_algo_t cache_algo, double f_old , double 
                 std::cerr << ERROR_MSG_ARGS << std::endl;
                 return  ERROR;
             }
-            program = new CacheAlgorithm(blocks_num, f_old, f_new , FBR);
+            program = new Algorithm(blocks_num, f_old, f_new , FBR);
             break;
         case LFU:
-            program = new CacheAlgorithm(blocks_num , 0, 1 , LFU);
+            program = new Algorithm(blocks_num , 0, 1 , LFU);
             break;
         case LRU:
-            program = new CacheAlgorithm(blocks_num , 1 , 0 , LRU);
+            program = new Algorithm(blocks_num , 1 , 0 , LRU);
             break;
         default:
             std::cerr << ERROR_MSG_ARGS << std::endl;

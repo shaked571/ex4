@@ -1,7 +1,3 @@
-//
-// Created by shaked571 on 6/10/17.
-//
-
 #ifndef EX4_ALGORITHM_H
 #define EX4_ALGORITHM_H
 
@@ -10,7 +6,6 @@
 #include "CacheFS.h"
 #include "Block.h"
 #include <sys/stat.h>
-//#include <zconf.h>
 #include <stdlib.h>
 #include <iostream>     // std::cout
 #include <fstream>      // std::ifstream
@@ -18,14 +13,14 @@
 class Algorithm
 {
 public:
-    Algorithm(int blocks_num, cache_algo_t);
+    Algorithm(int blocks_num,double f_old , double f_new, cache_algo_t algoName);
     virtual ~Algorithm();
-    virtual void addBlockToCache(Block* block) = 0;
     int CachePread(int file_id, void *buf, size_t count, off_t offset);
     int programOpen(std::string pathName);
     bool isInCache(std::string filePath, int blockNum);
-
     const cache_algo_t &getAlgoName() const;
+    void addBlockToCache(Block* block);
+
 
 protected:
     unsigned int blksize;
@@ -37,7 +32,6 @@ protected:
     std::unordered_map<int, std::string> *fidToPath;
     //give you
     std::unordered_map<std::string, std::vector<bool>> *pathToVectorOfBlocks;
-    std::vector<int>* openFile;
 
 };
 

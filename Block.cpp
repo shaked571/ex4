@@ -1,7 +1,3 @@
-//
-// Created by shaked571 on 6/10/17.
-//
-
 #include "Block.h"
 
 Block::Block(void* memory, std::string path, int blockNum) :memory(memory), filePath(path),

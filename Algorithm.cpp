@@ -1,20 +1,15 @@
-//
-// Created by shaked571 on 6/10/17.
-//
-
 #include "Algorithm.h"
-#include <stdio.h>
-#include <cstdlib>
 #include <unistd.h>
-#include <stdlib.h>
 #include <cstring>
-#include <malloc.h>
+#include <algorithm>
+#include <tgmath.h>
 
 using namespace std;
 
 
 #define ERROR -1
-Algorithm::Algorithm(int blocks_num , cache_algo_t algoName):blockNum(blocks_num) , algoName(algoName)
+Algorithm::Algorithm(int blocks_num , double f_old , double f_new  ,cache_algo_t algoName):blockNum(blocks_num) , algoName
+        (algoName)
 {
     //block size call
     struct stat fi;
@@ -22,6 +17,8 @@ Algorithm::Algorithm(int blocks_num , cache_algo_t algoName):blockNum(blocks_num
     blksize = fi.st_blksize;
     pathToVectorOfBlocks  =  new std::unordered_map<std::string, std::vector<bool>>();
     fidToPath = new std::unordered_map<int, std::string>();
+    oldPartitionFinishLocation = (int)std::floor(blocks_num * f_old);
+    newPartitionFinishLocation = (int)std::floor(blocks_num * f_new);
 
 }
 
@@ -81,17 +78,19 @@ int Algorithm::CachePread(int file_id, void *buf, size_t count, off_t offset)
             ((*pathToVectorOfBlocks)[path])[currentBlock] = block;
             addBlockToCache(block);
         } else {
-            cout << "Size " << vectorOfBlocks.size() << endl;
+            int counter = 0;
             for (auto i = vectorOfBlocks.begin(); i != vectorOfBlocks.end(); ++i ) {
-                cout<<"path is: "<< path<<endl;
-                cout<<"path is: "<< (*i)->getFilePath()<<endl;
                 if (!path.compare((*i)->getFilePath()))
                 {
                     if (currentBlock == (*i)->getBlockNum()){
                         buffer = (*i)->getMemory();
-                        (*i)->upFreq();
+                        if (counter < newPartitionFinishLocation){
+                            (*i)->upFreq();
+                        }
+                        break;
                     }
                 }
+                counter++;
             }
         }
         currentData = ((char *)buffer);
@@ -116,6 +115,23 @@ bool Algorithm::isInCache(std::string filePath, int blockNum)
 }
 
 
+
+void Algorithm::addBlockToCache(Block *block)
+{
+    vector<Block*>::iterator endOfOld = vectorOfBlocks.begin() + oldPartitionFinishLocation;
+    if (vectorOfBlocks.size() >= blockNum)
+    {
+        auto min = std::min_element(vectorOfBlocks.begin(), endOfOld , [](Block *a, Block * b)
+        { return a->getFreq() < b->getFreq(); });
+        string filePath = (*min)->getFilePath();
+        int blockNum = (*min)->getBlockNum();
+        (*pathToVectorOfBlocks)[filePath][blockNum] = false;
+        vectorOfBlocks.erase(min);
+    }
+    (*pathToVectorOfBlocks)[block->getFilePath()][block->getBlockNum()] = true;
+    vectorOfBlocks.push_back(block);
+
+}
 
 
 
