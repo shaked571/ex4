@@ -276,10 +276,17 @@ int CacheFS_print_cache(const char *log_path)
     std::ofstream ofs(log_path, std::ios_base::out | std::ios_base::app);
 
     std::vector<Block*> arrangedVec = program->arrangedVec();
-    for(auto iter = arrangedVec.begin();iter != arrangedVec.end();++iter )
+    try
     {
+        for (auto iter = arrangedVec.begin(); iter != arrangedVec.end(); ++iter)
+        {
 
-        ofs<<(*iter)->getFilePath()<<" "<<(*iter)->getBlockNum()<<std::endl;
+            ofs << (*iter)->getFilePath() << " " << (*iter)->getBlockNum() << std::endl;
+        }
+    }
+    catch (std::exception &e)
+    {
+        return ERROR;
     }
     return 0;
 }
@@ -325,13 +332,14 @@ int CacheFS_print_stat(const char *log_path)
 
     }
     std::ofstream ofs(log_path, std::ios_base::out | std::ios_base::app);
-
-    std::vector<Block*> arrangedVec = program->arrangedVec();
-    for(auto iter = arrangedVec.begin();iter != arrangedVec.end();++iter )
+    try
     {
-
-        ofs<<(*iter)->getFilePath()<<" "<<(*iter)->getBlockNum()<<std::endl;
+        ofs << "Hits number: " << program->getHitsNum() <<"."<<"\n" << "Misses number: " << program->getMissNum()
+            <<"."<<std::endl;
     }
-
+    catch (std::exception &e)
+    {
+        return ERROR;
+    }
     return 0;
 }

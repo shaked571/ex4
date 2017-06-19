@@ -24,11 +24,21 @@ public:
 
     std::vector<Block*> arrangedVec();
 
+    int getHitsNum() const;
+
+    int getMissNum() const;
+
+    void HitsNumPlus();
+
+    void MissNumPlus();
+
 private:
     unsigned int blksize;
     int blockNum;
     double oldPartitionFinishLocation;
     double newPartitionFinishLocation;
+    int hitsNum;
+    int missNum;
     cache_algo_t algoName;
     std::vector<Block*> vectorOfBlocks;
     std::unordered_map<int, std::string> *fidToPath;

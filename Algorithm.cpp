@@ -19,6 +19,8 @@ Algorithm::Algorithm(int blocks_num , double f_old , double f_new  ,cache_algo_t
     fidToPath = new std::unordered_map<int, std::string>();
     oldPartitionFinishLocation = (int)std::floor(blocks_num * f_old);
     newPartitionFinishLocation = (int)std::floor(blocks_num * f_new);
+    hitsNum = 0;
+    missNum = 0;
 
 }
 
@@ -83,14 +85,19 @@ int Algorithm::CachePread(int file_id, void *buf, size_t count, off_t offset)
             Block * block  = new Block(buffer, path, currentBlock);
             ((*pathToVectorOfBlocks)[path])[currentBlock] = block;
             addBlockToCache(block);
-        } else {
+            MissNumPlus();
+        } else
+        {
             int counter = 0;
-            for (auto i = vectorOfBlocks.begin(); i != vectorOfBlocks.end(); ++i ) {
+            for (auto i = vectorOfBlocks.begin(); i != vectorOfBlocks.end(); ++i )
+            {
                 if (!path.compare((*i)->getFilePath()))
                 {
-                    if (currentBlock == (*i)->getBlockNum()){
+                    if (currentBlock == (*i)->getBlockNum())
+                    {
                         buffer = (*i)->getMemory();
-                        if (counter < newPartitionFinishLocation){
+                        if (counter < newPartitionFinishLocation)
+                        {
                             (*i)->upFreq();
                         }
                         break;
@@ -98,6 +105,7 @@ int Algorithm::CachePread(int file_id, void *buf, size_t count, off_t offset)
                 }
                 counter++;
             }
+            HitsNumPlus();
         }
         currentData = ((char *)buffer);
         if (currentBlock == (endBlock - 1)){
@@ -153,6 +161,26 @@ std::vector<Block *> Algorithm::arrangedVec() {
         std::sort(sortVec.begin(), sortVec.end());
         return sortVec;
     }
+}
+
+int Algorithm::getHitsNum() const
+{
+    return hitsNum;
+}
+
+int Algorithm::getMissNum() const
+{
+    return missNum;
+}
+
+void Algorithm::HitsNumPlus()
+{
+    hitsNum++;
+}
+
+void Algorithm::MissNumPlus()
+{
+    missNum++;
 }
 
 

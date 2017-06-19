@@ -39,6 +39,5 @@ bool Block::operator<(const Block &rhs) const
 Block::Block(const Block &block) :memory(block.memory), filePath(block.filePath), blockNum(block.blockNum)
 {
         *this = block;
-
 }
 
