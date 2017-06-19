@@ -22,7 +22,9 @@ public:
     void addBlockToCache(Block* block);
 
 
-protected:
+    std::vector<Block*> arrangedVec();
+
+private:
     unsigned int blksize;
     int blockNum;
     double oldPartitionFinishLocation;
@@ -30,7 +32,6 @@ protected:
     cache_algo_t algoName;
     std::vector<Block*> vectorOfBlocks;
     std::unordered_map<int, std::string> *fidToPath;
-    //give you
     std::unordered_map<std::string, std::vector<bool>> *pathToVectorOfBlocks;
 
 };

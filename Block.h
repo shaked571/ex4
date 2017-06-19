@@ -8,7 +8,11 @@ class Block
 {
 
 public:
-    Block(void* memoryU, std::string path, int blocNum);
+    bool operator<(const Block &rhs) const;
+
+    Block(const Block &block);
+
+    Block(void* memory, std::string path, int blocNum);
 
     void *getMemory() const;
 

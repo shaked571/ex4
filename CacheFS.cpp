@@ -1,13 +1,9 @@
 #include <iostream>
 #include <fstream>
+#include <stdlib.h>
+#include <malloc.h>
 #include "CacheFS.h"
 #include "Algorithm.h"
-//#include <boost/filesystem.hpp>
-
-
-//##################################################################################################################
-//Structs
-
 
 
 //##################################################################################################################
@@ -23,7 +19,6 @@ std::string const ERROR_MSG_ARGS = "Error occurred : invalid Argument";
 //Global
 
 Algorithm* program;
-int blksize;
 
 //##################################################################################################################
 //Function
@@ -94,7 +89,6 @@ int CacheFS_init(int blocks_num, cache_algo_t cache_algo, double f_old , double 
             program = new Algorithm(blocks_num , 1 , 0 , LRU);
             break;
         default:
-            std::cerr << ERROR_MSG_ARGS << std::endl;
             return  ERROR;
     }
     return 0;
@@ -118,7 +112,7 @@ int CacheFS_init(int blocks_num, cache_algo_t cache_algo, double f_old , double 
 */
 int CacheFS_destroy()
 {
-
+    delete program;
     return 0;
 }
 
@@ -155,7 +149,7 @@ int CacheFS_destroy()
 int CacheFS_open(const char *pathname)
 {
     char * full_path = realpath(pathname, NULL);
-    if(realpath(pathname, NULL) == nullptr)
+    if(full_path == nullptr)
     {
         std::cerr<< "Error: invalid path" <<std::endl; //TODO need to delete in the end!
         return ERROR;
@@ -186,7 +180,9 @@ int CacheFS_open(const char *pathname)
 		2. invalid file_id. file_id is valid if"f it was returned by
 		CacheFS_open, and it is not already closed.
  */
-int CacheFS_close(int file_id) {
+int CacheFS_close(int file_id)
+{
+
     return 0;
 }
 
@@ -271,32 +267,20 @@ Notes:
  */
 int CacheFS_print_cache(const char *log_path)
 {
-//    if(!(boost::filesystem::exists(log_path)))
-//    {
-//        return ERROR;
-//    }
-    std::ofstream ofs(log_path, std::ios_base::out | std::ios_base::app);
-    try
-    {
-        switch(program->getAlgoName()) {
-            case FBR:
-                break;
-            case LFU:
-                break;
-            case LRU:
-                break;
-            default:
-                break;
-        }
-    }catch (std::exception &e)
-    {
-        return ERROR;
+    std::ifstream file(log_path);
+    if(!file)
+    {// If the file was not found, then file is 0, i.e. !file=1 or true.
+        return ERROR;// The file was not found.
+
     }
+    std::ofstream ofs(log_path, std::ios_base::out | std::ios_base::app);
 
+    std::vector<Block*> arrangedVec = program->arrangedVec();
+    for(auto iter = arrangedVec.begin();iter != arrangedVec.end();++iter )
+    {
 
-
-
-
+        ofs<<(*iter)->getFilePath()<<" "<<(*iter)->getBlockNum()<<std::endl;
+    }
     return 0;
 }
 
@@ -334,7 +318,20 @@ Notes:
  */
 int CacheFS_print_stat(const char *log_path)
 {
+    std::ifstream file(log_path);
+    if(!file)
+    {// If the file was not found, then file is 0, i.e. !file=1 or true.
+        return ERROR;// The file was not found.
 
+    }
+    std::ofstream ofs(log_path, std::ios_base::out | std::ios_base::app);
+
+    std::vector<Block*> arrangedVec = program->arrangedVec();
+    for(auto iter = arrangedVec.begin();iter != arrangedVec.end();++iter )
+    {
+
+        ofs<<(*iter)->getFilePath()<<" "<<(*iter)->getBlockNum()<<std::endl;
+    }
 
     return 0;
 }

@@ -22,12 +22,16 @@ Algorithm::Algorithm(int blocks_num , double f_old , double f_new  ,cache_algo_t
 
 }
 
-Algorithm::~Algorithm()
-{
-    delete(pathToVectorOfBlocks);
-    delete(fidToPath);
+Algorithm::~Algorithm() {
     pathToVectorOfBlocks->clear();
     fidToPath->clear();
+    delete (pathToVectorOfBlocks);
+    delete (fidToPath);
+    pathToVectorOfBlocks = nullptr;
+    fidToPath = nullptr;
+    for (auto iter = vectorOfBlocks.begin(); iter != vectorOfBlocks.end(); ++iter) {
+        delete (*iter);
+    }
 }
 
 const cache_algo_t &Algorithm::getAlgoName() const {
@@ -59,9 +63,11 @@ int Algorithm::programOpen(std::string pathName) {
 
 int Algorithm::CachePread(int file_id, void *buf, size_t count, off_t offset)
 {
+    void *buffer;
     string currentData;
     std::string path = (*fidToPath)[file_id];
     string dataToReturn;
+    bool isAllocated = false;
 
     int startBlock , currentBlock , endBlock;
     startBlock =(int)(offset/blksize);
@@ -69,10 +75,10 @@ int Algorithm::CachePread(int file_id, void *buf, size_t count, off_t offset)
     endBlock = (int)((offset + count) / blksize) + 1;
     for (currentBlock; currentBlock < endBlock ; ++currentBlock)
     {
-        void *buffer;
         if(!isInCache(path, currentBlock))
         {
             buffer = aligned_alloc(blksize , blksize);
+            isAllocated = true;
             pread(file_id, buffer, blksize, (currentBlock*blksize));
             Block * block  = new Block(buffer, path, currentBlock);
             ((*pathToVectorOfBlocks)[path])[currentBlock] = block;
@@ -105,9 +111,11 @@ int Algorithm::CachePread(int file_id, void *buf, size_t count, off_t offset)
 
     void* toBuf = (void *)currentData.c_str();
     memcpy(buf , toBuf , currentData.size());
+    if (isAllocated){
+        free(buffer);
+    }
     return (int)currentData.size();
 }
-
 
 bool Algorithm::isInCache(std::string filePath, int blockNum)
 {
@@ -126,11 +134,25 @@ void Algorithm::addBlockToCache(Block *block)
         string filePath = (*min)->getFilePath();
         int blockNum = (*min)->getBlockNum();
         (*pathToVectorOfBlocks)[filePath][blockNum] = false;
+        delete(*min);
         vectorOfBlocks.erase(min);
     }
     (*pathToVectorOfBlocks)[block->getFilePath()][block->getBlockNum()] = true;
     vectorOfBlocks.push_back(block);
 
+}
+
+std::vector<Block *> Algorithm::arrangedVec() {
+    if(algoName == FBR or algoName == LRU)
+    {
+        return vectorOfBlocks;
+    }
+    else
+    {
+        std::vector<Block *> sortVec = vectorOfBlocks;
+        std::sort(sortVec.begin(), sortVec.end());
+        return sortVec;
+    }
 }
 
 

@@ -46,7 +46,8 @@ int main(int argc, char* argv[])
     cout << "num of bytes read " << b << endl;
     cout << (char*)(buffer) << endl;
 
-
+    CacheFS_destroy();
+    free(buffer);
 
 
 
@@ -102,5 +103,4 @@ int main(int argc, char* argv[])
 //    free(buffer);
     return 0;
 
-    return 0;
 }
