@@ -8,7 +8,8 @@
 #include "CacheAlgorithm.h"
 using namespace std;
 
-CacheAlgorithm::CacheAlgorithm(int blocks_num,double f_old , double f_new ) : Algorithm(blocks_num)
+CacheAlgorithm::CacheAlgorithm(int blocks_num,double f_old , double f_new , cache_algo_t
+algoName) : Algorithm(blocks_num , algoName)
 {
     oldPartitionFinishLocation = (int)std::floor(blocks_num * f_old);
     newPartitionFinishLocation = (int)std::floor(blocks_num * f_new);
@@ -23,8 +24,12 @@ void CacheAlgorithm::addBlockToCache(Block *block)
     {
         auto min = std::min_element(vectorOfBlocks.begin(), endOfOld , [](Block *a, Block * b)
                                     { return a->getFreq() < b->getFreq(); });
+        string filePath = (*min)->getFilePath();
+        int blockNum = (*min)->getBlockNum();
+        (*pathToVectorOfBlocks)[filePath][blockNum] = false;
         vectorOfBlocks.erase(min);
-        vectorOfBlocks.push_back(block);
     }
+    (*pathToVectorOfBlocks)[block->getFilePath()][block->getBlockNum()] = true;
+    vectorOfBlocks.push_back(block);
 
 }

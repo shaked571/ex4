@@ -4,7 +4,7 @@
 
 #include "Block.h"
 
-Block::Block(void* memoryU, std::string path, int blockNum) :memory(memory), filePath(path),
+Block::Block(void* memory, std::string path, int blockNum) :memory(memory), filePath(path),
                                                           blockNum(blockNum)
 {
     freq = 1;

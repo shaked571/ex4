@@ -14,7 +14,7 @@ using namespace std;
 
 
 #define ERROR -1
-Algorithm::Algorithm(int blocks_num):blockNum(blocks_num)
+Algorithm::Algorithm(int blocks_num , cache_algo_t algoName):blockNum(blocks_num) , algoName(algoName)
 {
     //block size call
     struct stat fi;
@@ -31,6 +31,10 @@ Algorithm::~Algorithm()
     delete(fidToPath);
     pathToVectorOfBlocks->clear();
     fidToPath->clear();
+}
+
+const cache_algo_t &Algorithm::getAlgoName() const {
+    return algoName;
 }
 
 int Algorithm::programOpen(std::string pathName) {
@@ -50,7 +54,7 @@ int Algorithm::programOpen(std::string pathName) {
     }
     unsigned long  numOfMaxBlock = ((fileLength + blksize  - 1) / blksize);//To round up the result
     (*fidToPath)[fid] = pathName;
-    std::vector<bool> fileBlocks(numOfMaxBlock);
+    std::vector<bool> fileBlocks(numOfMaxBlock , false);
     (*pathToVectorOfBlocks)[pathName] = fileBlocks;
     return fid;
 
@@ -60,7 +64,6 @@ int Algorithm::CachePread(int file_id, void *buf, size_t count, off_t offset)
 {
     string currentData;
     std::string path = (*fidToPath)[file_id];
-    auto vectorOfBlocksOfTheFid = (*pathToVectorOfBlocks)[path];
     string dataToReturn;
 
     int startBlock , currentBlock , endBlock;
@@ -70,16 +73,6 @@ int Algorithm::CachePread(int file_id, void *buf, size_t count, off_t offset)
     for (currentBlock; currentBlock < endBlock ; ++currentBlock)
     {
         void *buffer;
-
-        for ( auto i = vectorOfBlocks.begin(); i != vectorOfBlocks.end(); i++ ) {
-            if (path.compare((*i)->getFilePath())){
-                if (blockNum == (*i)->getBlockNum()){
-                    buffer = (*i)->getMemory();
-                    (*i)->upFreq();
-                }
-            }
-        }
-
         if(!isInCache(path, currentBlock))
         {
             buffer = aligned_alloc(blksize , blksize);
@@ -87,6 +80,19 @@ int Algorithm::CachePread(int file_id, void *buf, size_t count, off_t offset)
             Block * block  = new Block(buffer, path, currentBlock);
             ((*pathToVectorOfBlocks)[path])[currentBlock] = block;
             addBlockToCache(block);
+        } else {
+            cout << "Size " << vectorOfBlocks.size() << endl;
+            for (auto i = vectorOfBlocks.begin(); i != vectorOfBlocks.end(); ++i ) {
+                cout<<"path is: "<< path<<endl;
+                cout<<"path is: "<< (*i)->getFilePath()<<endl;
+                if (!path.compare((*i)->getFilePath()))
+                {
+                    if (currentBlock == (*i)->getBlockNum()){
+                        buffer = (*i)->getMemory();
+                        (*i)->upFreq();
+                    }
+                }
+            }
         }
         currentData = ((char *)buffer);
         if (currentBlock == (endBlock - 1)){
@@ -106,15 +112,7 @@ int Algorithm::CachePread(int file_id, void *buf, size_t count, off_t offset)
 
 bool Algorithm::isInCache(std::string filePath, int blockNum)
 {
-
-    for ( auto i = vectorOfBlocks.begin(); i != vectorOfBlocks.end(); i++ ) {
-        if (filePath.compare((*i)->getFilePath())){
-            if (blockNum == (*i)->getBlockNum()){
-                return true;
-            }
-        }
-    }
-    return false;
+    return (*pathToVectorOfBlocks)[filePath][blockNum];
 }
 
 
