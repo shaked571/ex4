@@ -36,12 +36,12 @@ int main(int argc, char* argv[])
 
     void* buffer = aligned_alloc(blksize , blksize);
 
-    int b = CacheFS_pread(a , buffer , 50 , 200);
+    int b = CacheFS_pread(a , buffer , 800 , 0);
 
     cout << "num of bytes read " << b << endl;
     cout << (char*)(buffer) << endl;
 
-    b = CacheFS_pread(a , buffer , 100 , 200);
+    b = CacheFS_pread(a , buffer , 800 , 800);
 
     cout << "num of bytes read " << b << endl;
     cout << (char*)(buffer) << endl;

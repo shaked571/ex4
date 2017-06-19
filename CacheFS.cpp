@@ -3,10 +3,12 @@
 //
 
 #include <iostream>
+#include <fstream>
 #include "CacheFS.h"
 #include "fcntl.h"
 #include "Algorithm.h"
 #include "CacheAlgorithm.h"
+#include <boost/filesystem.hpp>
 #include <string>
 #include <stdio.h>
 #include <stdlib.h>
@@ -279,7 +281,35 @@ Notes:
 		1. system call or library function fails (e.g. open, write).
 		2. log_path is invalid.
  */
-int CacheFS_print_cache(const char *log_path) {
+int CacheFS_print_cache(const char *log_path)
+{
+    if(!(boost::filesystem::exists(log_path)))
+    {
+        return ERROR;
+    }
+    std::ofstream ofs(log_path, std::ios_base::out | std::ios_base::app);
+    try
+    {
+        switch(program->getAlgoName()) {
+            case FBR:
+                break;
+            case LFU:
+                break;
+            case LRU:
+                break;
+            default:
+                break;
+        }
+        ofs<<
+    }catch (std::exception &e)
+    {
+        return ERROR;
+    }
+
+
+
+
+
     return 0;
 }
 
@@ -315,6 +345,9 @@ Notes:
 		1. system call or library function fails (e.g. open, write).
 		2. log_path is invalid.
  */
-int CacheFS_print_stat(const char *log_path) {
+int CacheFS_print_stat(const char *log_path)
+{
+
+
     return 0;
 }

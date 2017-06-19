@@ -9,7 +9,7 @@
 
 class CacheAlgorithm :public Algorithm{
 public:
-    CacheAlgorithm(int blocks_num,double f_old , double f_new );
+    CacheAlgorithm(int blocks_num,double f_old , double f_new, cache_algo_t algoName );
 
     void addBlockToCache(Block* block);
 
