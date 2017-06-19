@@ -20,7 +20,7 @@ Algorithm::Algorithm(int blocks_num):blockNum(blocks_num)
     struct stat fi;
     stat("/tmp", &fi);
     blksize = fi.st_blksize;
-    pathToVectorOfBlocks  =  new std::unordered_map<std::string, std::vector<Block*>>();
+    pathToVectorOfBlocks  =  new std::unordered_map<std::string, std::vector<bool>>();
     fidToPath = new std::unordered_map<int, std::string>();
 
 }
@@ -50,7 +50,7 @@ int Algorithm::programOpen(std::string pathName) {
     }
     unsigned long  numOfMaxBlock = ((fileLength + blksize  - 1) / blksize);//To round up the result
     (*fidToPath)[fid] = pathName;
-    std::vector<Block*> fileBlocks(numOfMaxBlock);
+    std::vector<bool> fileBlocks(numOfMaxBlock);
     (*pathToVectorOfBlocks)[pathName] = fileBlocks;
     return fid;
 
@@ -85,9 +85,6 @@ int Algorithm::CachePread(int file_id, void *buf, size_t count, off_t offset)
             buffer = aligned_alloc(blksize , blksize);
             pread(file_id, buffer, blksize, (currentBlock*blksize));
             Block * block  = new Block(buffer, path, currentBlock);
-            if ( ((*pathToVectorOfBlocks)[path])[currentBlock] != NULL){
-                delete  ((*pathToVectorOfBlocks)[path])[currentBlock];
-            }
             ((*pathToVectorOfBlocks)[path])[currentBlock] = block;
             addBlockToCache(block);
         }

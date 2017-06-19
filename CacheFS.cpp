@@ -6,9 +6,7 @@
 #include "CacheFS.h"
 #include "fcntl.h"
 #include "Algorithm.h"
-#include "LfuAlgorithm.h"
 #include "CacheAlgorithm.h"
-#include "LruAlgorithm.h"
 #include <string>
 #include <stdio.h>
 #include <stdlib.h>

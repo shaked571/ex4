@@ -33,7 +33,7 @@ protected:
     std::vector<Block*> vectorOfBlocks;
     std::unordered_map<int, std::string> *fidToPath;
     //give you
-    std::unordered_map<std::string, std::vector<Block*>> *pathToVectorOfBlocks;
+    std::unordered_map<std::string, std::vector<bool>> *pathToVectorOfBlocks;
     std::vector<int>* openFile;
 
 };
