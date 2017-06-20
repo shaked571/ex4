@@ -1,0 +1,39 @@
+shaked571, bendavidelad
+Refael Shaked Greenfeld(305030868), Elad Ben David(203281050)
+EX: 4
+
+FILES:
+README - this file
+Makefile - a compilation file
+Algorithm.cpp - An implementation of the Algorithm given between FBR, LRU, FLU
+Algorithm.h- The header of the implementation of the Algorithm given between FBR, LRU, FLU
+Block.cpp- An implementation of a wrapper of the memory block
+Block.h-The header of the implementation of ta wrapper of the memory block
+CacheFS.cpp - An implementation of the program which implement a library of cache algorithms
+
+REMARKS:
+Implementation:
+Our program has a class of Algorithm that implement the require algorithm according to the user input
+* We decided not to use inheritance from the reason that all the algorithms can behave the same as FBR
+  with fixed parameters of the new and old sections.
+When the user init the progarm we create a global instant of Algorithm which run all he function needed.
+Our Block file is a wrapper of the memory stored in the cache which save parameters that helps to run
+the program.
+In the algorithm class we save the following data structures:
+vectorOfBlocks - Which is like as name can implement as vector of blocks pointers that represent that cache.
+                We have decided to store the blocks in the vector frm the reason we can use it as a stack for
+                the algorithms and we save the hassle of looking in O(n) in the fact we also implemented a hash
+                table of flags that tell according to a full path if the block exist. so miss cost O(1).
+
+fidToPath - Which is an unordered_map from file Id to a full path.
+            We have decided to implement this data structure because we realized that he only indicator
+            if we have saved a memory block of a file is according is full path. Because we also just
+            need to add and to erase values an unordered_map would be the best way.
+
+pathToVectorOfBlocks - Which is an unordered_map from a full path to the file vector of booleans.
+                        This structure tells us if we already allocated memory for a certain block in the cache.
+                        This way we make the search for a block which isn't in the cache to O(1).
+
+ANSWERS:
+in the Answers.pdf file
+
