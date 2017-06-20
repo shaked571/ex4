@@ -148,7 +148,8 @@ int CacheFS_destroy()
  */
 int CacheFS_open(const char *pathname)
 {
-    if (FILE *file = fopen(pathname, "r")) {
+    if (FILE *file = fopen(pathname, "r"))
+    {
         std::cout <<"This is the path name : " << pathname << std::endl;
         char * full_path = realpath(pathname, NULL);
         std::cout <<"This is the full path name : " << full_path << std::endl;
@@ -234,6 +235,26 @@ int CacheFS_pread(int file_id, void *buf, size_t count, off_t offset) {
         std::cerr <<"in CacheFS_pread" <<ERROR_MSG_ARGS << std::endl; //TODO delete in the end!
         return ERROR;
     }
+    program->getHitsNum();
+    std::cout<<"miss : "<<program->getMissNum()<<std::endl;
+    std::cout<<"hits : "<<program->getHitsNum()<<std::endl;
+    for(auto iter = program->getPathToVectorOfBlocks()->begin();iter!= program->getPathToVectorOfBlocks()->end(); ++iter)
+    {
+        std::cout<<"the fie full path: "<<(*iter).first<<std::endl;
+        int i = 0;
+        for(auto iterIn = (*iter).second.begin(); iterIn != (*iter).second.end(); ++iterIn)
+        {
+            std::cout<<"the file "<<(*iter).first<< " --block num: "<<i<<" is: "<<(*iterIn)<<std::endl;
+            ++i;
+        }
+    }
+    for(auto iter = program->getVectorOfBlocks().begin();iter != (program->getVectorOfBlocks()).end();++iter)
+    {
+        std::cout<<"block from file "<<(*iter)->getFilePath()<<" num: "<<(*iter)->getBlockNum()<<" the freq "<<(*iter)->getFreq()<<std::endl;
+
+    }
+
+
     int numOfBytesRead = program->CachePread(file_id, buf, count, offset);
     return numOfBytesRead;
 }
@@ -277,7 +298,7 @@ Notes:
 int CacheFS_print_cache(const char *log_path)
 {
     std::ifstream file(log_path);
-    if(!file)
+    if(!file.good())
     {// If the file was not found, then file is 0, i.e. !file=1 or true.
         return ERROR;// The file was not found.
 
@@ -334,8 +355,9 @@ Notes:
  */
 int CacheFS_print_stat(const char *log_path)
 {
+
     std::ifstream file(log_path);
-    if(!file)
+    if(!file.good())
     {// If the file was not found, then file is 0, i.e. !file=1 or true.
         return ERROR;// The file was not found.
 

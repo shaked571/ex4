@@ -14,6 +14,9 @@ class Algorithm
 {
 public:
     Algorithm(int blocks_num,double f_old , double f_new, cache_algo_t algoName);
+
+    std::unordered_map<std::string, std::vector<bool, std::allocator<bool>>> *getPathToVectorOfBlocks() const;
+
     virtual ~Algorithm();
     int CachePread(int file_id, void *buf, size_t count, off_t offset);
     int programOpen(std::string pathName);
@@ -33,6 +36,8 @@ public:
     void MissNumPlus();
 
     int closeFile(int fileId);
+
+    const std::vector<Block *> &getVectorOfBlocks() const;
 
 private:
     unsigned int blksize;

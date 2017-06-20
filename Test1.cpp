@@ -63,7 +63,7 @@ int main(int argc, char *argv[])
         // Read from the second file the first block.
         if (CacheFS_pread(f2, buf, 150, 0) != 150)
         {
-            std::cerr << "Error in CacheFS_pread while legally reading" << std::endl;
+            std::cerr << "Error in CacheFS_pread while legally reading1" << std::endl;
             return -1;
         }
 
@@ -88,9 +88,10 @@ int main(int argc, char *argv[])
 
         // Read from the first file the first + second block.
         // There should be cache hit for the first block and cache miss for the second.
+
         if (CacheFS_pread(f1, buf + 150, 4000, 150) != 4000)
         {
-            std::cerr << "Error in CacheFS_pread while legally reading" << std::endl;
+            std::cerr << "Error in CacheFS_pread while legally reading2" << std::endl;
             return -1;
         }
 
@@ -102,7 +103,7 @@ int main(int argc, char *argv[])
         // Read from illegal file.
         if (CacheFS_pread(f3, buf + 4150, 5000, 0) != -1)
         {
-            std::cerr << "Error in CacheFS_pread while illegally reading" << std::endl;
+            std::cerr << "Error in CacheFS_pread while illegally reading3" << std::endl;
             return -1;
         }
 
@@ -114,7 +115,7 @@ int main(int argc, char *argv[])
         // Read from illegal file.
         if (CacheFS_pread(f2, buf + 4150, 5000, 0) != -1)
         {
-            std::cerr << "Error in CacheFS_pread while illegally reading" << std::endl;
+            std::cerr << "Error in CacheFS_pread while illegally reading4" << std::endl;
             return -1;
         }
 
@@ -162,7 +163,7 @@ int main(int argc, char *argv[])
         // Read from the first file the first + second block.
         if (CacheFS_pread(f1, buf, 7000, 0) != 7000)
         {
-            std::cerr << "Error in CacheFS_pread while legally reading" << std::endl;
+            std::cerr << "Error in CacheFS_pread while legally reading5" << std::endl;
             return -1;
         }
 
@@ -175,7 +176,7 @@ int main(int argc, char *argv[])
         // Should be cache hit.
         if (CacheFS_pread(f1, buf, 5, 24900) != 5)
         {
-            std::cerr << "Error in CacheFS_pread while legally reading" << std::endl;
+            std::cerr << "Error in CacheFS_pread while legally reading6" << std::endl;
             return -1;
         }
 
@@ -187,7 +188,7 @@ int main(int argc, char *argv[])
         // Read from the first file the second + third block.
         if (CacheFS_pread(f1, buf + 5, 8192, 4096) != 8192)
         {
-            std::cerr << "Error in CacheFS_pread while legally reading" << std::endl;
+            std::cerr << "Error in CacheFS_pread while legally reading7" << std::endl;
             return -1;
         }
 
@@ -200,7 +201,7 @@ int main(int argc, char *argv[])
         // There all should be cache hits.
         if (CacheFS_pread(f1, buf + 8197, 8192, 150) != 8192)
         {
-            std::cerr << "Error in CacheFS_pread while legally reading" << std::endl;
+            std::cerr << "Error in CacheFS_pread while legally reading8" << std::endl;
             return -1;
         }
 
@@ -213,7 +214,7 @@ int main(int argc, char *argv[])
         // There should be cache hit.
         if (CacheFS_pread(f1, buf + 16389, 50, 0) != 50)
         {
-            std::cerr << "Error in CacheFS_pread while legally reading" << std::endl;
+            std::cerr << "Error in CacheFS_pread while legally reading9" << std::endl;
             return -1;
         }
 
