@@ -54,8 +54,7 @@ int Algorithm::programOpen(std::string pathName) {
     std::ifstream is(pathName, std::ifstream::ate | std::ifstream::binary);
     if(is)
     {
-          fileLength = (unsigned long)is.tellg();
-        std::cout<<"this is the file ln "<<fileLength<<std::endl;
+        fileLength = (unsigned long)is.tellg();
     } else
     {
         return ERROR;
@@ -69,41 +68,9 @@ int Algorithm::programOpen(std::string pathName) {
 }
 
 
-void *Algorithm::hit(void *buffer, std::string path, int currentBlock )
+void hit()
 {
-    int counter = 0;
-    for (auto i = vectorOfBlocks.begin(); i != vectorOfBlocks.end(); ++i )
-    {
-        if (!path.compare((*i)->getFilePath()))
-        {
-            if (currentBlock == (*i)->getBlockNum())
-            {
-                buffer = (*i)->getMemory();
-                if (counter < newPartitionFinishLocation)
-                {
-                    (*i)->upFreq();
-                }
-                counter++;
-                HitsNumPlus();
-            }
-        }
-    }
-    return buffer;
-}
 
-void* Algorithm::miss(void *buffer, std::string path,int currentBlock, int file_id)
-{
-    buffer = aligned_alloc(blksize , blksize);
-    ssize_t readFile = pread(file_id, buffer, blksize, (currentBlock * blksize));
-    if (readFile < 0)
-    {
-        return nullptr;
-    }
-    Block * block  = new Block(buffer, path, currentBlock);
-    ((*pathToVectorOfBlocks)[path])[currentBlock] = true;
-    addBlockToCache(block);
-    MissNumPlus();
-    return buffer;
 }
 int Algorithm::CachePread(int file_id, void *buf, size_t count, off_t offset)
 {
@@ -112,10 +79,12 @@ int Algorithm::CachePread(int file_id, void *buf, size_t count, off_t offset)
         return -1;
     }
     void *buffer;
+    string  a;
     string currentData;
     std::string path = (*fidToPath)[file_id];
     string dataToReturn;
     bool isAllocated = false;
+
     int startBlock , currentBlock , endBlock;
     startBlock =(int)(offset/blksize);
     currentBlock = startBlock;
@@ -126,43 +95,59 @@ int Algorithm::CachePread(int file_id, void *buf, size_t count, off_t offset)
         {
             if(!isInCache(path, currentBlock))
             {
+                buffer = aligned_alloc(blksize , blksize);
                 isAllocated = true;
-                buffer = miss(buffer, path, currentBlock, file_id);
-                if(buffer == nullptr)
+                ssize_t readFile = pread(file_id, buffer, blksize, (currentBlock*blksize));
+                if (readFile < 0)
                 {
                     return ERROR;
                 }
-            }
-            else
+                Block * block  = new Block(buffer, path, currentBlock);
+                ((*pathToVectorOfBlocks)[path])[currentBlock] = true;
+                addBlockToCache(block);
+                MissNumPlus();
+            } else
             {
-                buffer = hit(buffer, path, currentBlock);
+                int counter = 0;
+                for (auto i = vectorOfBlocks.begin(); i != vectorOfBlocks.end(); ++i )
+                {
+                    if (!path.compare((*i)->getFilePath()))
+                    {
+                        if (currentBlock == (*i)->getBlockNum())
+                        {
+                            buffer = (*i)->getMemory();
+                            a = (char*)buffer;
+                            if (counter < newPartitionFinishLocation)
+                            {
+                                (*i)->upFreq();
+                            }
+                            counter++;
+                            HitsNumPlus();
+                            break;
+                        }
+                    }
+                }
             }
             currentData = ((char *)buffer);
             currentData = currentData.substr(0,blksize);
-            if (currentBlock == (endBlock - 1))
-            {
+            if (currentBlock == (endBlock - 1)){
                 currentData = currentData.substr(0, (count+offset)%blksize);
             }
             if (currentBlock == startBlock)
             {
-                std::cout<< "currentData.size(): "<<currentData.size()<<std::endl;
-                std::cout<< "offset: "<<offset<<std::endl;
+//                std::cout<< "currentData.size(): "<<currentData.size()<<std::endl;
+//                std::cout<< "offset: "<<offset<<std::endl;
 
-                std::cout<< "offset%blksize: "<<((unsigned long)offset)%blksize<<std::endl;
+//                std::cout<< "offset%blksize: "<<((unsigned long)offset)%blksize<<std::endl;
                 currentData = currentData.substr(((unsigned long)offset)%blksize , currentData.size());
             }
             dataToReturn += currentData;
-        } else
-        {
+        } else {
             break;
         }
     }
     void* toBuf = (void *)currentData.c_str();
     memcpy(buf , toBuf , currentData.size());
-    if (isAllocated)
-    {
-        free(buffer);
-    }
     return (int)dataToReturn.size();
 }
 
@@ -189,6 +174,8 @@ void Algorithm::addBlockToCache(Block *block)
         string filePath = (*min)->getFilePath();
         int blockNum = (*min)->getBlockNum();
         (*pathToVectorOfBlocks)[filePath][blockNum] = false;
+        void* buffer = (*min)->getMemory();
+        free(buffer);
         delete(*min);
         vectorOfBlocks.erase(min);
     }
@@ -228,19 +215,19 @@ int Algorithm::closeFile(int fileId)
 
         for (auto iter = fidToPath->begin() ; iter != fidToPath->end() ;++iter)
         {
-            std::cout<<"in close "<<std::endl;
-            std::cout<<"check with path: "<<path<<std::endl;
+//            std::cout<<"in close "<<std::endl;
+//            std::cout<<"check with path: "<<path<<std::endl;
 
-            std::cout<<"fid num "<<(*iter).first<<" is ile path "<<(*iter).second<<std::endl;
+//            std::cout<<"fid num "<<(*iter).first<<" is ile path "<<(*iter).second<<std::endl;
             if (path.compare((*iter).second) == 0)
             {
-                std::cout<<"path.compare((*iter).second)"<<path.compare((*iter).second)<<std::endl;
+//                std::cout<<"path.compare((*iter).second)"<<path.compare((*iter).second)<<std::endl;
                 return 0;
             }
-            std::cout<<"path.compare((*iter).second)"<<path.compare((*iter).second)<<std::endl;
+//            std::cout<<"path.compare((*iter).second)"<<path.compare((*iter).second)<<std::endl;
 
         }
-        std::cout<<"earse"<<std::endl;
+//        std::cout<<"earse"<<std::endl;
 
         pathToVectorOfBlocks->erase(path);
         return 0;
@@ -270,7 +257,4 @@ void Algorithm::MissNumPlus()
 unordered_map<string, vector<bool, allocator<bool>>> *Algorithm::getPathToVectorOfBlocks() const {
     return pathToVectorOfBlocks;
 }
-
-
-
 

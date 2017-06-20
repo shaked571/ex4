@@ -126,7 +126,7 @@ int main(int argc, char *argv[])
 
         // Read from the first file chunk that is bigger then the file itself.
         int c = CacheFS_pread(f1, buf + 4150, 7000, 20000);
-        std::cout <<"this is c: "<< c<<std::endl;
+//        std::cout <<"this is c: "<< c<<std::endl;
 //        std::cout <<"this is fileSize: "
 
         if (c != 5832)
