@@ -55,6 +55,7 @@ int Algorithm::programOpen(std::string pathName) {
     if(is)
     {
           fileLength = (unsigned long)is.tellg();
+        std::cout<<"this is the file ln "<<fileLength<<std::endl;
     } else
     {
         return ERROR;
@@ -68,18 +69,53 @@ int Algorithm::programOpen(std::string pathName) {
 }
 
 
-void hit()
+void *Algorithm::hit(void *buffer, std::string path, int currentBlock )
 {
-    
+    int counter = 0;
+    for (auto i = vectorOfBlocks.begin(); i != vectorOfBlocks.end(); ++i )
+    {
+        if (!path.compare((*i)->getFilePath()))
+        {
+            if (currentBlock == (*i)->getBlockNum())
+            {
+                buffer = (*i)->getMemory();
+                if (counter < newPartitionFinishLocation)
+                {
+                    (*i)->upFreq();
+                }
+                counter++;
+                HitsNumPlus();
+            }
+        }
+    }
+    return buffer;
+}
+
+void* Algorithm::miss(void *buffer, std::string path,int currentBlock, int file_id)
+{
+    buffer = aligned_alloc(blksize , blksize);
+    ssize_t readFile = pread(file_id, buffer, blksize, (currentBlock * blksize));
+    if (readFile < 0)
+    {
+        return nullptr;
+    }
+    Block * block  = new Block(buffer, path, currentBlock);
+    ((*pathToVectorOfBlocks)[path])[currentBlock] = true;
+    addBlockToCache(block);
+    MissNumPlus();
+    return buffer;
 }
 int Algorithm::CachePread(int file_id, void *buf, size_t count, off_t offset)
 {
+    if ( fidToPath->find(file_id) == fidToPath->end() )
+    {
+        return -1;
+    }
     void *buffer;
     string currentData;
     std::string path = (*fidToPath)[file_id];
     string dataToReturn;
     bool isAllocated = false;
-
     int startBlock , currentBlock , endBlock;
     startBlock =(int)(offset/blksize);
     currentBlock = startBlock;
@@ -90,40 +126,21 @@ int Algorithm::CachePread(int file_id, void *buf, size_t count, off_t offset)
         {
             if(!isInCache(path, currentBlock))
             {
-                buffer = aligned_alloc(blksize , blksize);
                 isAllocated = true;
-                ssize_t readFile = pread(file_id, buffer, blksize, (currentBlock*blksize));
-                if (readFile < 0)
+                buffer = miss(buffer, path, currentBlock, file_id);
+                if(buffer == nullptr)
                 {
                     return ERROR;
                 }
-                Block * block  = new Block(buffer, path, currentBlock);
-                ((*pathToVectorOfBlocks)[path])[currentBlock] = true;
-                addBlockToCache(block);
-                MissNumPlus();
-            } else
+            }
+            else
             {
-                int counter = 0;
-                for (auto i = vectorOfBlocks.begin(); i != vectorOfBlocks.end(); ++i )
-                {
-                    if (!path.compare((*i)->getFilePath()))
-                    {
-                        if (currentBlock == (*i)->getBlockNum())
-                        {
-                            buffer = (*i)->getMemory();
-                            if (counter < newPartitionFinishLocation)
-                            {
-                                (*i)->upFreq();
-                            }
-                            counter++;
-                            HitsNumPlus();
-                            break;
-                        }
-                    }
-                }
+                buffer = hit(buffer, path, currentBlock);
             }
             currentData = ((char *)buffer);
-            if (currentBlock == (endBlock - 1)){
+            currentData = currentData.substr(0,blksize);
+            if (currentBlock == (endBlock - 1))
+            {
                 currentData = currentData.substr(0, (count+offset)%blksize);
             }
             if (currentBlock == startBlock)
@@ -135,13 +152,15 @@ int Algorithm::CachePread(int file_id, void *buf, size_t count, off_t offset)
                 currentData = currentData.substr(((unsigned long)offset)%blksize , currentData.size());
             }
             dataToReturn += currentData;
-        } else {
+        } else
+        {
             break;
         }
     }
     void* toBuf = (void *)currentData.c_str();
     memcpy(buf , toBuf , currentData.size());
-    if (isAllocated){
+    if (isAllocated)
+    {
         free(buffer);
     }
     return (int)dataToReturn.size();

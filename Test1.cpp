@@ -125,7 +125,11 @@ int main(int argc, char *argv[])
         CacheFS_print_stat(STAT_LOG_PATH);
 
         // Read from the first file chunk that is bigger then the file itself.
-        if (CacheFS_pread(f1, buf + 4150, 7000, 20000) != 5832)
+        int c = CacheFS_pread(f1, buf + 4150, 7000, 20000);
+        std::cout <<"this is c: "<< c<<std::endl;
+//        std::cout <<"this is fileSize: "
+
+        if (c != 5832)
         {
             std::cerr << "Error in CacheFS_pread while reading with request that is larger then the file size" << std::endl;
             return -1;

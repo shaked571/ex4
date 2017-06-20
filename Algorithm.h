@@ -38,7 +38,8 @@ public:
     int closeFile(int fileId);
 
     const std::vector<Block *> &getVectorOfBlocks() const;
-
+    void* hit(void *buffer, std::string path, int currentBlock );
+    void* miss(void *buffer, std::string path, int currentBlock, int file_id );
 private:
     unsigned int blksize;
     int blockNum;
