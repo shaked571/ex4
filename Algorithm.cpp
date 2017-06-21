@@ -170,10 +170,12 @@ bool Algorithm::isInCache(std::string filePath, int blockNum)
 
 void Algorithm::addBlockToCache(Block *block)
 {
-    cout << "Before change: " << endl;
-    for ( auto i = vectorOfBlocks.rbegin(); i != vectorOfBlocks.rend(); i++ ) {
-        std::cout << (*i)->getBlockNum() << std::endl;
-    }
+//    cout << "Before change: " << endl;
+//    for ( auto i = vectorOfBlocks.rbegin(); i != vectorOfBlocks.rend(); i++ ) {
+//        std::cout << (*i)->getBlockNum();
+//        std::cout << " - " << (*i)->getFreq() << std::endl;
+//
+//    }
 
     auto endOfOld = vectorOfBlocks.begin() + oldPartitionFinishLocation;
     if (vectorOfBlocks.size() >= blockNum)
@@ -190,7 +192,8 @@ void Algorithm::addBlockToCache(Block *block)
         string filePath = (*min)->getFilePath();
         int currentBlockNum = (*min)->getBlockNum();
         (*pathToVectorOfBlocks)[filePath][currentBlockNum] = false;
-//        cout << "Item to delete " <<
+//        cout << "Item to delete " << (*min)->getBlockNum() << endl;
+
         void* buffer = (*min)->getMemory();
         free(buffer);
         delete (*min);
@@ -198,10 +201,11 @@ void Algorithm::addBlockToCache(Block *block)
     }
     (*pathToVectorOfBlocks)[block->getFilePath()][block->getBlockNum()] = true;
     vectorOfBlocks.push_back(block);
-    cout << "After change: " << endl;
-    for ( auto i = vectorOfBlocks.rbegin(); i != vectorOfBlocks.rend(); i++ ) {
-        std::cout << (*i)->getBlockNum() << std::endl;
-    }
+//    cout << "After change: " << endl;
+//    for ( auto i = vectorOfBlocks.rbegin(); i != vectorOfBlocks.rend(); i++ ) {
+//        std::cout << (*i)->getBlockNum();
+//        std::cout << " - " << (*i)->getFreq() << std::endl;
+//    }
 
 }
 
