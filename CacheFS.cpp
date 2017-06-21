@@ -13,7 +13,6 @@ int const MINIMUM_PRC = 0;
 int const MAXIMUM_PRC = 1;
 int const ERROR = -1;
 int const MINIMUM_BLOCK_NUM = 1;
-std::string const ERROR_MSG_ARGS = "Error occurred : invalid Argument";
 
 //##################################################################################################################
 //Global
@@ -62,10 +61,8 @@ Algorithm* program;
  */
 int CacheFS_init(int blocks_num, cache_algo_t cache_algo, double f_old , double f_new  )
 {
-//    std::cout << cache_algo << std::endl;//TODO
     if (blocks_num < MINIMUM_BLOCK_NUM)
     {
-//        std::cerr << ERROR_MSG_ARGS << std::endl;//TODO
         return  ERROR;
     }
 
@@ -77,7 +74,6 @@ int CacheFS_init(int blocks_num, cache_algo_t cache_algo, double f_old , double 
                                                                                             MAXIMUM_PRC||
                f_new + f_old > MAXIMUM_PRC)
             {
-//                std::cerr << ERROR_MSG_ARGS << std::endl;//TODO
                 return  ERROR;
             }
             program = new Algorithm(blocks_num, f_old, f_new , FBR);
@@ -150,20 +146,16 @@ int CacheFS_open(const char *pathname)
 {
     if (FILE *file = fopen(pathname, "r"))
     {
-//        std::cout <<"This is the path name : " << pathname << std::endl;//TODO
         char * full_path = realpath(pathname, NULL);
-//        std::cout <<"This is the full path name : " << full_path << std::endl;/'/TODO
 
         if(full_path == nullptr)
         {
-//            std::cerr<< "Error: invalid path" <<std::endl; //TODO need to delete in the end!
             return ERROR;
         }
 
         std::string strFullPath = (std::string)full_path;
         if(strFullPath.find("/tmp") != 0)
         {
-//            std::cerr<< "Error: the path"<<strFullPath<< "isn't from tmp directory" <<std::endl; //TODO
             // need to
             // delete in the end!
             return ERROR;
@@ -232,7 +224,6 @@ int CacheFS_pread(int file_id, void *buf, size_t count, off_t offset) {
 
     if(buf == NULL || offset < 0 )
     {
-//        std::cerr <<"in CacheFS_pread" <<ERROR_MSG_ARGS << std::endl; //TODO delete in the end!
         return ERROR;
     }
     int numOfBytesRead = program->CachePread(file_id, buf, count, offset);
@@ -283,6 +274,7 @@ int CacheFS_print_cache(const char *log_path)
         return ERROR;// The file was not found.
 
     }
+
     std::ofstream ofs(log_path, std::ios_base::out | std::ios_base::app);
 
     std::vector<Block*> arrangedVec = program->arrangedVec();
@@ -292,7 +284,6 @@ int CacheFS_print_cache(const char *log_path)
         {
             ofs << (*iter)->getFilePath() << " " << (*iter)->getBlockNum() << std::endl;
         }
-
     }
 
     catch (std::exception &e)

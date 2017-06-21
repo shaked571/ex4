@@ -24,9 +24,6 @@ Algorithm::Algorithm(int blocks_num , double f_old , double f_new  ,cache_algo_t
 
 }
 
-const vector<Block *> &Algorithm::getVectorOfBlocks() const {
-    return vectorOfBlocks;
-}
 
 Algorithm::~Algorithm() {
     pathToVectorOfBlocks->clear();
@@ -40,9 +37,6 @@ Algorithm::~Algorithm() {
     }
 }
 
-const cache_algo_t &Algorithm::getAlgoName() const {
-    return algoName;
-}
 
 int Algorithm::programOpen(std::string pathName) {
     unsigned long fileLength;
@@ -115,7 +109,7 @@ int Algorithm::CachePread(int file_id, void *buf, size_t count, off_t offset)
                         if (currentBlock == (*i)->getBlockNum())
                         {
                             buffer = (*i)->getMemory();
-                            if (counter < newPartitionFinishLocation)
+                            if (counter < (vectorOfBlocks.size() - newPartitionFinishLocation))
                             {
                                 (*i)->upFreq();
                             }
@@ -129,8 +123,6 @@ int Algorithm::CachePread(int file_id, void *buf, size_t count, off_t offset)
                 vectorOfBlocks.erase(std::remove(vectorOfBlocks.begin(), vectorOfBlocks.end(), blockToAppend)
                         , vectorOfBlocks.end());
                 vectorOfBlocks.push_back(blockToAppend);
-
-
             }
             currentData = ((char *)buffer);
             currentData = currentData.substr(0,blksize);
@@ -170,13 +162,6 @@ bool Algorithm::isInCache(std::string filePath, int blockNum)
 
 void Algorithm::addBlockToCache(Block *block)
 {
-//    cout << "Before change: " << endl;
-//    for ( auto i = vectorOfBlocks.rbegin(); i != vectorOfBlocks.rend(); i++ ) {
-//        std::cout << (*i)->getBlockNum();
-//        std::cout << " - " << (*i)->getFreq() << std::endl;
-//
-//    }
-
     auto endOfOld = vectorOfBlocks.begin() + oldPartitionFinishLocation;
     if (vectorOfBlocks.size() >= blockNum)
     {
@@ -185,14 +170,12 @@ void Algorithm::addBlockToCache(Block *block)
         for ( auto i = vectorOfBlocks.begin(); i != endOfOld; i++ ) {
             if ((*i)->getFreq() < (*min)->getFreq()){
                 min = i;
-                break;
             }
         }
 
         string filePath = (*min)->getFilePath();
         int currentBlockNum = (*min)->getBlockNum();
         (*pathToVectorOfBlocks)[filePath][currentBlockNum] = false;
-//        cout << "Item to delete " << (*min)->getBlockNum() << endl;
 
         void* buffer = (*min)->getMemory();
         free(buffer);
@@ -201,12 +184,6 @@ void Algorithm::addBlockToCache(Block *block)
     }
     (*pathToVectorOfBlocks)[block->getFilePath()][block->getBlockNum()] = true;
     vectorOfBlocks.push_back(block);
-//    cout << "After change: " << endl;
-//    for ( auto i = vectorOfBlocks.rbegin(); i != vectorOfBlocks.rend(); i++ ) {
-//        std::cout << (*i)->getBlockNum();
-//        std::cout << " - " << (*i)->getFreq() << std::endl;
-//    }
-
 }
 
 std::vector<Block *> Algorithm::arrangedVec() {
@@ -217,7 +194,9 @@ std::vector<Block *> Algorithm::arrangedVec() {
     else
     {
         std::vector<Block *> sortVec = vectorOfBlocks;
-        std::sort(sortVec.begin(), sortVec.end());
+        std::sort(sortVec.begin(), sortVec.end() , [](Block* a , Block* b){
+            return a->getFreq() < b->getFreq();
+        });
         return sortVec;
     }
 }
@@ -240,20 +219,11 @@ int Algorithm::closeFile(int fileId)
 
         for (auto iter = fidToPath->begin() ; iter != fidToPath->end() ;++iter)
         {
-//            std::cout<<"in close "<<std::endl;
-//            std::cout<<"check with path: "<<path<<std::endl;
-
-//            std::cout<<"fid num "<<(*iter).first<<" is ile path "<<(*iter).second<<std::endl;
             if (path.compare((*iter).second) == 0)
             {
-//                std::cout<<"path.compare((*iter).second)"<<path.compare((*iter).second)<<std::endl;
                 return 0;
             }
-//            std::cout<<"path.compare((*iter).second)"<<path.compare((*iter).second)<<std::endl;
-
         }
-//        std::cout<<"earse"<<std::endl;
-
         pathToVectorOfBlocks->erase(path);
         return 0;
     }
@@ -277,9 +247,5 @@ void Algorithm::HitsNumPlus()
 void Algorithm::MissNumPlus()
 {
     missNum++;
-}
-
-unordered_map<string, vector<bool, allocator<bool>>> *Algorithm::getPathToVectorOfBlocks() const {
-    return pathToVectorOfBlocks;
 }
 

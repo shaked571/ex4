@@ -4,7 +4,7 @@
 #include <sys/stat.h>
 #include <cstring>
 #include "CacheFS.h"
-
+using namespace std;
 void basicLFU()
 {
     bool ok = true;
@@ -34,7 +34,7 @@ void basicLFU()
     eraser.open("/tmp/LFU_stats.txt", std::ofstream::out | std::ofstream::trunc);
     eraser.close();
 
-    CacheFS_init(5, LFU, 0.1, 0.1);
+    CacheFS_init(5, LFU, 0, 0.1);
     int fd1 = CacheFS_open("/tmp/LFU1.txt");
     int fd2 = CacheFS_open("/tmp/LFU2.txt");
 
@@ -42,34 +42,57 @@ void basicLFU()
 
     // ramp up the frequency of these ones:
     CacheFS_pread(fd1, &data, 10, 0*blockSize);
+    cout << "-----------------------------" << endl;
     CacheFS_pread(fd1, &data, 10, 1*blockSize);
+    cout << "-----------------------------" << endl;
     CacheFS_pread(fd1, &data, 10, 2*blockSize);
+    cout << "-----------------------------" << endl;
     CacheFS_pread(fd1, &data, 10, 3*blockSize);
+    cout << "-----------------------------" << endl;
     CacheFS_pread(fd1, &data, 10, 4*blockSize);
+    cout << "-----------------------------" << endl;
     CacheFS_pread(fd1, &data, 10, 0*blockSize);
+    cout << "-----------------------------" << endl;
     CacheFS_pread(fd1, &data, 10, 0*blockSize);
+    cout << "-----------------------------" << endl;
     CacheFS_pread(fd1, &data, 10, 0*blockSize);
+    cout << "-----------------------------" << endl;
     CacheFS_pread(fd1, &data, 10, 0*blockSize);
+    cout << "-----------------------------" << endl;
     CacheFS_pread(fd1, &data, 10, 2*blockSize);
+    cout << "-----------------------------" << endl;
     CacheFS_pread(fd1, &data, 10, 2*blockSize);
+    cout << "-----------------------------" << endl;
     CacheFS_pread(fd1, &data, 10, 2*blockSize);
+    cout << "-----------------------------" << endl;
     CacheFS_pread(fd1, &data, 10, 4*blockSize);
+    cout << "-----------------------------" << endl;
     CacheFS_pread(fd1, &data, 10, 4*blockSize);
+    cout << "-----------------------------" << endl;
     CacheFS_pread(fd1, &data, 10, 1*blockSize);
     CacheFS_print_cache("/tmp/LFU_cache.txt");
 
     // these should all be misses:
     CacheFS_pread(fd2, &data, 10, 0*blockSize);
+    cout << "-----------------------------" << endl;
     CacheFS_print_cache("/tmp/LFU_cache.txt");
     CacheFS_pread(fd2, &data, 10, 1*blockSize);
+    cout << "-----------------------------" << endl;
     CacheFS_print_cache("/tmp/LFU_cache.txt");
     CacheFS_pread(fd2, &data, 10, 0*blockSize);
+    cout << "-----------------------------" << endl;
     CacheFS_pread(fd2, &data, 10, 1*blockSize);
+    cout << "-----------------------------" << endl;
     CacheFS_pread(fd2, &data, 10, 0*blockSize);
+    cout << "-----------------------------" << endl;
     CacheFS_pread(fd2, &data, 10, 1*blockSize);
+    cout << "-----------------------------" << endl;
     CacheFS_pread(fd2, &data, 10, 0*blockSize);
+    cout << "-----------------------------" << endl;
     CacheFS_pread(fd2, &data, 10, 1*blockSize);
+    cout << "-----------------------------" << endl;
     CacheFS_pread(fd2, &data, 10, 0*blockSize);
+    cout << "-----------------------------" << endl;
     CacheFS_pread(fd2, &data, 10, 1*blockSize);
 
     // get the results:
@@ -82,15 +105,24 @@ void basicLFU()
     if (resultsFileInput.is_open()) {
         resultsFileInput.read(cacheResults, 10000);
 
-        char cacheCorrect[] = "/tmp/LFU1.txt 0\n/tmp/LFU1.txt "
-                "2\n/tmp/LFU1.txt 4\n/tmp/LFU1.txt 1\n/tmp/LFU1.txt"
-                " 3\n"
-                "/tmp/LFU1.txt 0\n/tmp/LFU1.txt "
-                "2\n/tmp/LFU1.txt 4\n/tmp/LFU1.txt 1\n/tmp/LFU2.txt"
-                " 0\n"
-                "/tmp/LFU1.txt 0\n/tmp/LFU1.txt "
-                "2\n/tmp/LFU1.txt 4\n/tmp/LFU1.txt 1\n/tmp/LFU2.txt"
-                " 1\n";
+        char cacheCorrect[] =
+                "/tmp/LFU1.txt 0\n"
+                "/tmp/LFU1.txt 2\n"
+                "/tmp/LFU1.txt 4\n"
+                "/tmp/LFU1.txt 1\n"
+                "/tmp/LFU1.txt 3\n"
+
+                "/tmp/LFU1.txt 0\n"
+                "/tmp/LFU1.txt 2\n"
+                "/tmp/LFU1.txt 4\n"
+                "/tmp/LFU1.txt 1\n"
+                "/tmp/LFU2.txt 0\n"
+
+                "/tmp/LFU1.txt 0\n"
+                "/tmp/LFU1.txt 2\n"
+                "/tmp/LFU1.txt 4\n"
+                "/tmp/LFU1.txt 1\n"
+                "/tmp/LFU2.txt 1\n";
 
         if (strcmp(cacheResults, cacheCorrect)) {ok = false;}
     }

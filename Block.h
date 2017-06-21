@@ -8,7 +8,6 @@ class Block
 {
 
 public:
-    bool operator<(const Block &rhs) const;
 
     Block(const Block &block);
 

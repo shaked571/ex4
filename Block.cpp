@@ -27,10 +27,6 @@ int Block::getBlockNum() const {
     return blockNum;
 }
 
-bool Block::operator<(const Block &rhs) const
-{
-    return freq < rhs.freq;
-}
 /**
  * copy constructor
  * @param block
