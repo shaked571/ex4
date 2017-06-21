@@ -21,7 +21,7 @@
 #define CACHE_LOG_PATH "CacheLog1"
 #define STAT_LOG_PATH "StatLog1"
 #define BUFFER_OUTPUT "BufferOutput1"
-
+using namespace std;
 
 int main(int argc, char *argv[])
 {
@@ -30,6 +30,7 @@ int main(int argc, char *argv[])
         char *buf = nullptr;
         buf = new char[BUFFER_SIZE];
         std::ofstream bufferOutput(BUFFER_OUTPUT);
+        std::string a;
 
         // Start LRU Library.
         if (CacheFS_init(4, LRU, 2, 0.5))
@@ -66,7 +67,8 @@ int main(int argc, char *argv[])
             std::cerr << "Error in CacheFS_pread while legally reading1" << std::endl;
             return -1;
         }
-
+        a = (char*)buf;
+        cout << a << endl;
         // Print Cache State.
         CacheFS_print_cache(CACHE_LOG_PATH);
         // Print Cache Stats.
@@ -195,6 +197,7 @@ int main(int argc, char *argv[])
             std::cerr << "Error in CacheFS_pread while legally reading7" << std::endl;
             return -1;
         }
+
 
         // Print Cache State.
         CacheFS_print_cache(CACHE_LOG_PATH);

@@ -68,12 +68,11 @@ int Algorithm::programOpen(std::string pathName) {
 }
 
 
-void hit()
-{
-
-}
 int Algorithm::CachePread(int file_id, void *buf, size_t count, off_t offset)
 {
+    if (count == 0){
+        return 0;
+    }
     if ( fidToPath->find(file_id) == fidToPath->end() )
     {
         return -1;
@@ -88,7 +87,7 @@ int Algorithm::CachePread(int file_id, void *buf, size_t count, off_t offset)
     int startBlock , currentBlock , endBlock;
     startBlock =(int)(offset/blksize);
     currentBlock = startBlock;
-    endBlock = (int)((offset + count) / blksize) + 1;
+    endBlock = (int)((offset + count - 1) / blksize) + 1;
     for (currentBlock; currentBlock < endBlock ; ++currentBlock)
     {
         if (currentBlock < ((*pathToVectorOfBlocks)[path].size()))
@@ -116,29 +115,34 @@ int Algorithm::CachePread(int file_id, void *buf, size_t count, off_t offset)
                         if (currentBlock == (*i)->getBlockNum())
                         {
                             buffer = (*i)->getMemory();
-                            a = (char*)buffer;
                             if (counter < newPartitionFinishLocation)
                             {
                                 (*i)->upFreq();
                             }
-                            counter++;
                             HitsNumPlus();
                             break;
                         }
                     }
+                    counter++;
                 }
+                Block *blockToAppend = vectorOfBlocks[counter];
+                vectorOfBlocks.erase(std::remove(vectorOfBlocks.begin(), vectorOfBlocks.end(), blockToAppend)
+                        , vectorOfBlocks.end());
+                vectorOfBlocks.push_back(blockToAppend);
+
+
             }
             currentData = ((char *)buffer);
             currentData = currentData.substr(0,blksize);
             if (currentBlock == (endBlock - 1)){
-                currentData = currentData.substr(0, (count+offset)%blksize);
+                if ((count+offset )%blksize){
+                    currentData = currentData.substr(0,((count+offset )%blksize));
+                }else{
+                    currentData = currentData.substr(0,blksize);
+                }
             }
             if (currentBlock == startBlock)
             {
-//                std::cout<< "currentData.size(): "<<currentData.size()<<std::endl;
-//                std::cout<< "offset: "<<offset<<std::endl;
-
-//                std::cout<< "offset%blksize: "<<((unsigned long)offset)%blksize<<std::endl;
                 currentData = currentData.substr(((unsigned long)offset)%blksize , currentData.size());
             }
             dataToReturn += currentData;
@@ -146,8 +150,8 @@ int Algorithm::CachePread(int file_id, void *buf, size_t count, off_t offset)
             break;
         }
     }
-    void* toBuf = (void *)currentData.c_str();
-    memcpy(buf , toBuf , currentData.size());
+    void* toBuf = (void *)dataToReturn.c_str();
+    memcpy(buf , toBuf , dataToReturn.size());
     return (int)dataToReturn.size();
 }
 
@@ -166,21 +170,38 @@ bool Algorithm::isInCache(std::string filePath, int blockNum)
 
 void Algorithm::addBlockToCache(Block *block)
 {
-    vector<Block*>::iterator endOfOld = vectorOfBlocks.begin() + oldPartitionFinishLocation;
+    cout << "Before change: " << endl;
+    for ( auto i = vectorOfBlocks.rbegin(); i != vectorOfBlocks.rend(); i++ ) {
+        std::cout << (*i)->getBlockNum() << std::endl;
+    }
+
+    auto endOfOld = vectorOfBlocks.begin() + oldPartitionFinishLocation;
     if (vectorOfBlocks.size() >= blockNum)
     {
-        auto min = std::min_element(vectorOfBlocks.begin(), endOfOld , [](Block *a, Block * b)
-        { return a->getFreq() < b->getFreq(); });
+        vector<Block*>::iterator itemToDelete;
+        auto min = vectorOfBlocks.begin();
+        for ( auto i = vectorOfBlocks.begin(); i != endOfOld; i++ ) {
+            if ((*i)->getFreq() < (*min)->getFreq()){
+                min = i;
+                break;
+            }
+        }
+
         string filePath = (*min)->getFilePath();
-        int blockNum = (*min)->getBlockNum();
-        (*pathToVectorOfBlocks)[filePath][blockNum] = false;
+        int currentBlockNum = (*min)->getBlockNum();
+        (*pathToVectorOfBlocks)[filePath][currentBlockNum] = false;
+//        cout << "Item to delete " <<
         void* buffer = (*min)->getMemory();
         free(buffer);
-        delete(*min);
+        delete (*min);
         vectorOfBlocks.erase(min);
     }
     (*pathToVectorOfBlocks)[block->getFilePath()][block->getBlockNum()] = true;
     vectorOfBlocks.push_back(block);
+    cout << "After change: " << endl;
+    for ( auto i = vectorOfBlocks.rbegin(); i != vectorOfBlocks.rend(); i++ ) {
+        std::cout << (*i)->getBlockNum() << std::endl;
+    }
 
 }
 

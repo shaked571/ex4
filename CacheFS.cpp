@@ -83,10 +83,10 @@ int CacheFS_init(int blocks_num, cache_algo_t cache_algo, double f_old , double 
             program = new Algorithm(blocks_num, f_old, f_new , FBR);
             break;
         case LFU:
-            program = new Algorithm(blocks_num , 0, 1 , LFU);
+            program = new Algorithm(blocks_num , 1, 0 , LFU);
             break;
         case LRU:
-            program = new Algorithm(blocks_num , 1 , 0 , LRU);
+            program = new Algorithm(blocks_num , 1/blocks_num , 1-(1/blocks_num) , LRU);
             break;
         default:
             return  ERROR;
@@ -288,12 +288,13 @@ int CacheFS_print_cache(const char *log_path)
     std::vector<Block*> arrangedVec = program->arrangedVec();
     try
     {
-        for (auto iter = arrangedVec.begin(); iter != arrangedVec.end(); ++iter)
+        for (auto iter = arrangedVec.rbegin(); iter != arrangedVec.rend(); ++iter)
         {
-
             ofs << (*iter)->getFilePath() << " " << (*iter)->getBlockNum() << std::endl;
         }
+
     }
+
     catch (std::exception &e)
     {
         return ERROR;
@@ -345,8 +346,9 @@ int CacheFS_print_stat(const char *log_path)
     std::ofstream ofs(log_path, std::ios_base::out | std::ios_base::app);
     try
     {
-        ofs << "Hits number: " << program->getHitsNum() <<"."<<"\n" << "Misses number: " << program->getMissNum()
-            <<"."<<std::endl;
+
+        ofs << "Hits number: " << program->getHitsNum() <<"\n" << "Misses number: " << program->getMissNum()
+            <<std::endl;
     }
     catch (std::exception &e)
     {
